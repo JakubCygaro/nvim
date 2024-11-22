@@ -1,6 +1,5 @@
 require("config.lazy")
 require("config.oil")
-require("config.mini")
 require("config.vscode")
 require("config.cmp")
 require("config.telescope")
