@@ -1,5 +1,6 @@
 local cmp = require'cmp'
 
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require'cmp'.setup({
   snippet = {
     expand = function(args)
@@ -12,7 +13,6 @@ require'cmp'.setup({
   },
   window = {
     cmp.config.window.bordered(),
-    cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
       ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -20,7 +20,7 @@ require'cmp'.setup({
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }), 
-      ['<tab>'] = cmp.mapping.select_next_item(),
+      -- ['<tab>'] = cmp.mapping.select_next_item(),
       -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   }),
   sources =  {

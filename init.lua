@@ -1,10 +1,15 @@
 require("config.lazy")
 require("config.oil")
 require("config.vscode")
-require("config.cmp")
+require("remap")
+require("config.lualine")
+require("config.bufferline")
+-- require("config.cmp")
 require("config.telescope")
 require("config.lspconfig")
 require("config.treesitter")
+require("config.undotree")
+require("config.vim-fugitive")
 -- require("config.closer")
 
 -- require("oil").setup()
@@ -12,6 +17,8 @@ require("config.treesitter")
 --
 
 vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.signcolumn = "number"
 vim.o.tabstop = 4 -- A TAB character looks like 4 spaces
 vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
 vim.o.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
