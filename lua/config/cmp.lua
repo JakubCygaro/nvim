@@ -20,7 +20,7 @@ cmp.setup({
     ['<Tab>'] = cmp.mapping.confirm({select = true}),
     -- scroll up and down the documentation window
     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-d>'] = cmp.mapping.scroll_docs(4), 
+    ['<C-d>'] = cmp.mapping.scroll_docs(4),
     -- Simple tab complete
     -- ['<Tab>'] = cmp.mapping(function(fallback)
     --   local col = vim.fn.col('.') - 1

@@ -49,7 +49,11 @@ require'lspconfig'.rust_analyzer.setup {
 }
 
 require'lspconfig'.clangd.setup {
-    -- cmd = {'clangd', '--background-index', '--compile-commands-dir', 'D:/systemc/excersies/build'},
+    cmd = {
+        'clangd',
+        '--background-index',
+        '--compile-commands-dir',
+        'C:/Users/racuchy/AppData/Local/nvim-data/mason/packages/clangd/clangd_19.1.0/bin/clangd.exe'},
     init_options = {
         clangdFileStatus = true,
         clangdSemanticHighlighting = true
@@ -59,9 +63,14 @@ require'lspconfig'.clangd.setup {
     settings = {
         ['clangd'] = {
             ['compilationDatabasePath'] = 'build',
-            ['fallbackFlags'] = {'-std=c++17'}
+            ['fallbackFlags'] = {'-std=c++17'},
+            ['CompileFlags'] = {
+                ['Add'] = {
+                    '--include=C:/msys64/mingw64/include'
+                }
+            }
         }
-    } 
+    }
 }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
