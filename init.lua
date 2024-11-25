@@ -10,6 +10,7 @@ require("config.lspconfig")
 require("config.treesitter")
 require("config.undotree")
 require("config.vim-fugitive")
+require("config.toggleterm")
 -- require("config.closer")
 
 -- require("oil").setup()
