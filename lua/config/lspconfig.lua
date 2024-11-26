@@ -141,3 +141,12 @@ require'lspconfig'.omnisharp.setup {
       },
     },
 }
+require'lspconfig'.html.setup {
+
+}
+require'lspconfig'.oxlint.setup {
+
+}
+
+
+
