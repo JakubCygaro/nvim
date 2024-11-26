@@ -8,7 +8,7 @@ require("mason-lspconfig").setup({
         "rust_analyzer",
         "omnisharp",
         "clangd",
-        "html-lsp"
+        "html"
     }
 })
 
