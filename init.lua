@@ -6,7 +6,6 @@ require("config.lualine")
 require("config.bufferline")
 require("config.cmp")
 require("config.telescope")
-require"config.mason"
 require("config.lspconfig")
 require("config.treesitter")
 require("config.undotree")

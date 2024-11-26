@@ -31,8 +31,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-require("mason").setup()
-require("mason-lspconfig").setup()
+require("mason").setup({
+
+})
+
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        "lua_ls",
+        "rust_analyzer",
+        "omnisharp",
+        "clangd",
+        "html",
+    }
+})
 
 
 require'lspconfig'.rust_analyzer.setup {
@@ -144,9 +155,9 @@ require'lspconfig'.omnisharp.setup {
 require'lspconfig'.html.setup {
 
 }
-require'lspconfig'.oxlint.setup {
-
-}
+--require'lspconfig'.oxlint.setup {
+--
+--}
 
 
 
