@@ -42,6 +42,7 @@ require("mason-lspconfig").setup({
         "omnisharp",
         "clangd",
         "html",
+        "intelephense"
     }
 })
 
@@ -158,6 +159,9 @@ require'lspconfig'.html.setup {
 --require'lspconfig'.oxlint.setup {
 --
 --}
+require'lspconfig'.intelephense.setup{
+
+}
 
 
 
