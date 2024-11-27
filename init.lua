@@ -25,6 +25,19 @@ vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a T
 vim.o.softtabstop = 4 -- Number of spaces inserted instead of a TAB character
 vim.o.shiftwidth = 4 -- Number of spaces inserted when indenting
 
+vim.g.move_map_keys = 0;
+
+
+vim.cmd('vmap <A-Down> <Plug>MoveBlockDown')
+vim.cmd('vmap <A-Up> <Plug>MoveBlockUp')
+vim.cmd('nmap <A-Down> <Plug>MoveLineDown')
+vim.cmd('nmap <A-Up> <Plug>MoveLineUp')
+
+vim.cmd('vmap <A-Right> <Plug>MoveBlockRight')
+vim.cmd('vmap <A-Left> <Plug>MoveBlockLeft')
+vim.cmd('nmap <A-Right> <Plug>MoveCharRight')
+vim.cmd('nmap <A-Left> <Plug>MoveCharLeft')
+
 vim.api.nvim_call_function('lexima#add_rule', {
     {char = '<', input_after = '>'}
 })
