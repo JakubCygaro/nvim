@@ -45,7 +45,11 @@ require("mason-lspconfig").setup({
         "intelephense"
     }
 })
+local lspconfig = require'lspconfig'
 
+local on_attach = function(client)
+    require'completion'.on_attach(client)
+end
 
 require'lspconfig'.rust_analyzer.setup {
     settings = {
@@ -55,17 +59,70 @@ require'lspconfig'.rust_analyzer.setup {
             },
             diagnostics = {
                 enable = true;
-            }
+            },
+            imports = {
+                granularity = {
+                    group = "module",
+                },
+                prefix = "self",
+            },
+            cargo = {
+                buildScripts = {
+                    enable = true,
+                },
+            },
+            procMacro = {
+                enable = true
+            },
         }
-    }
+    },
+    --capabilities = lspconfig_defaults.capabilities
 }
 
+local get_data_path = function ()
+    local data_path = vim.fn.stdpath('data');
+    return data_path;
+end
+local function exe_ext()
+    if jit.os == "Windows" then
+       return ".exe"
+    else
+        return ""
+    end
+end
+local function get_clangd_setup()
+    local nvim_data_path = get_data_path();
+    local ext = exe_ext();
+    local mingw64 = ""
+    local cc = "gcc"
+    local cxxc = "g++"
+    local add_cxxc_include = ""
+    if jit.os == 'Windows' then
+       mingw64 = '--include=C:/msys64/mingw64/include'
+       cc = "x86_64-w64-mingw32-gcc"
+       cxxc = "x86_64-w64-mingw32-g++"
+    end
+
+    return {
+        clangd_path = nvim_data_path ..'/mason/packages/clangd/clangd_19.1.0/bin/clangd' .. ext,
+        add_cc_include = mingw64,
+        add_cxxc_include = add_cxxc_include,
+        cc = cc,
+        cxxc = cxxc
+    }
+end
+
+local clangd_setup  = get_clangd_setup()
 require'lspconfig'.clangd.setup {
     cmd = {
-        'clangd',
+        clangd_setup.clangd_path,
+        --'clangd',
+        --'--project-root='.. vim.fn.getcwd(),
         '--background-index',
-        '--compile-commands-dir',
-        'C:/Users/racuchy/AppData/Local/nvim-data/mason/packages/clangd/clangd_19.1.0/bin/clangd.exe'},
+        --'--query-driver=\'x86_64-w64-mingw32-g++\',\'x86_64-w64-mingw32-gcc\'',
+        '--enable-config',
+        '--compile-commands-dir=./compile_commands.json'
+    },
     init_options = {
         clangdFileStatus = true,
         clangdSemanticHighlighting = true
@@ -73,16 +130,64 @@ require'lspconfig'.clangd.setup {
     filetypes = {'c', 'cpp', 'cxx', 'cc'},
     root_dir = function() vim.fn.getcwd() end,
     settings = {
-        ['clangd'] = {
-            ['compilationDatabasePath'] = 'build',
-            ['fallbackFlags'] = {'-std=c++17'},
-            ['CompileFlags'] = {
-                ['Add'] = {
-                    '--include=C:/msys64/mingw64/include'
-                }
+        clangd = {
+            compilationDatabasePath = 'clangdbuild',
+            fallbackFlags = {
+                '-std=c++17'
             }
         }
     }
+    --settings = {
+    --    ['clangd'] = {
+    --        ['compilationDatabasePath'] = 'build',
+    --        ['fallbackFlags'] = {'-std=c++17'},
+    --        ['CompileFlags'] = {
+    --            ['Compiler'] = {
+    --                clangd_setup.cc
+    --            },
+    --            ['Add'] = {
+    --                clangd_setup.add_cc_include
+    --            }
+    --        },
+    --        --['---'] = {
+    --        --    ['If'] = {
+    --        --        ['PathMatch'] = '.*\\.cpp .*\\.cxx .*\\.cc .*\\.hpp'
+    --        --    },
+    --        --    ['Compiler'] = {
+    --        --        clangd_setup.cxxc
+    --        --    },
+    --        --    ['Add'] = {
+    --        --        clangd_setup.add_cxxc_include
+    --        --    }
+    --        --},
+    --        --string.format(
+    --        --[[
+    --        --If:
+    --        --    PathMatch: .*\.c .*\.h
+    --        --CompileFlags:
+    --        --    Compiler: %s
+    --        --    Add: [%s]
+    --        --If:
+    --        --    PathMatch: .*\.cpp .*\.cxx .*\.cc .*\.hpp
+    --        --CompileFlags:
+    --        --    Compiler: %s
+    --        --    Add: [%s]
+    --        --]]
+    --        --, clangd_setup.cc, clangd_setup.add_cc_include,
+    --        --    clangd_setup.cxxc, clangd_setup.add_cc_include)
+    --        --['If'] = {
+    --        --    ['PathMatch'] = '.*\\.c .*\\.h'
+    --        --},
+    --        --['CompileFlags'] = {
+    --        --    ['Compiler'] = {
+    --        --        clangd_setup.cc
+    --        --    },
+    --        --    ['Add'] = {
+    --        --        clangd_setup.add_include
+    --        --    }
+    --        --}
+    --    }
+    --}
 }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -111,46 +216,60 @@ require'lspconfig'.lua_ls.setup({
     },
   },
 })
+local function get_omnisharp_setup()
+    local nvim_data_path = get_data_path();
+    local ext = exe_ext();
+    --local dll = ""
+    --if jit.os == 'Windows' then
+    --   dll = '.dll'
+    --end
+    return {
+        omnisharp_path = nvim_data_path ..'/mason/packages/omnisharp/libexec/OmniSharp' .. ext,
+    }
+end
+local omnisharp_setup = get_omnisharp_setup()
 require'lspconfig'.omnisharp.setup {
-    cmd = { "dotnet", "C:\\Users\\racuchy\\AppData\\Local\\nvim-data\\mason\\packages\\omnisharp\\libexec/OmniSharp.dll" },
-
+    cmd = {
+        "dotnet",
+        omnisharp_setup.omnisharp_path
+    },
     settings = {
-      FormattingOptions = {
-        -- Enables support for reading code style, naming convention and analyzer
-        -- settings from .editorconfig.
-        EnableEditorConfigSupport = true,
-        -- Specifies whether 'using' directives should be grouped and sorted during
-        -- document formatting.
-        OrganizeImports = true,
-      },
-      MsBuild = {
-        -- If true, MSBuild project system will only load projects for files that
-        -- were opened in the editor. This setting is useful for big C# codebases
-        -- and allows for faster initialization of code navigation features only
-        -- for projects that are relevant to code that is being edited. With this
-        -- setting enabled OmniSharp may load fewer projects and may thus display
-        -- incomplete reference lists for symbols.
-        LoadProjectsOnDemand = false,
-      },
-      RoslynExtensionsOptions = {
-        -- Enables support for roslyn analyzers, code fixes and rulesets.
-        EnableAnalyzersSupport = true,
-        -- Enables support for showing unimported types and unimported extension
-        -- methods in completion lists. When committed, the appropriate using
-        -- directive will be added at the top of the current file. This option can
-        -- have a negative impact on initial completion responsiveness,
-        -- particularly for the first few completion sessions after opening a
-        -- solution.
-        EnableImportCompletion = nil,
-        -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
-        -- true
-        AnalyzeOpenDocumentsOnly = false,
-      },
-      Sdk = {
-        -- Specifies whether to include preview versions of the .NET SDK when
-        -- determining which version to use for project loading.
-        IncludePrereleases = true,
-      },
+        FormattingOptions = {
+            -- Enables support for reading code style, naming convention and analyzer
+            -- settings from .editorconfig.
+            EnableEditorConfigSupport = true,
+            -- Specifies whether 'using' directives should be grouped and sorted during
+            -- document formatting.
+            OrganizeImports = true,
+        },
+        MsBuild = {
+            -- If true, MSBuild project system will only load projects for files that
+            -- were opened in the editor. This setting is useful for big C# codebases
+            -- and allows for faster initialization of code navigation features only
+            -- for projects that are relevant to code that is being edited. With this
+            -- setting enabled OmniSharp may load fewer projects and may thus display
+            -- incomplete reference lists for symbols.
+            LoadProjectsOnDemand = false,
+        },
+        RoslynExtensionsOptions = {
+            -- Enables support for roslyn analyzers, code fixes and rulesets.
+            EnableAnalyzersSupport = true,
+            -- Enables support for showing unimported types and unimported extension
+            -- methods in completion lists. When committed, the appropriate using
+            -- directive will be added at the top of the current file. This option can
+            -- have a negative impact on initial completion responsiveness,
+            -- particularly for the first few completion sessions after opening a
+            -- solution.
+            EnableImportCompletion = nil,
+            -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+            -- true
+            AnalyzeOpenDocumentsOnly = false,
+        },
+        Sdk = {
+            -- Specifies whether to include preview versions of the .NET SDK when
+            -- determining which version to use for project loading.
+            IncludePrereleases = true,
+        },
     },
 }
 require'lspconfig'.html.setup {

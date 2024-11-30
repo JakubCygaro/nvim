@@ -40,5 +40,5 @@ vim.cmd('nmap <A-Right> <Plug>MoveCharRight')
 vim.cmd('nmap <A-Left>  <Plug>MoveCharLeft')
 
 vim.api.nvim_call_function('lexima#add_rule', {
-    {char = '<', input_after = '>'}
+    {char = '<', input_after = '>', filetype = 'html'}
 })
