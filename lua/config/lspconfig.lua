@@ -131,9 +131,12 @@ require'lspconfig'.clangd.setup {
     root_dir = function() vim.fn.getcwd() end,
     settings = {
         clangd = {
-            compilationDatabasePath = 'clangdbuild',
+--          compilationDatabasePath = 'clangdbuild',
             fallbackFlags = {
                 '-std=c++17'
+            },
+            arguments = {
+                '--enable-config'
             }
         }
     }
@@ -218,13 +221,13 @@ require'lspconfig'.lua_ls.setup({
 })
 local function get_omnisharp_setup()
     local nvim_data_path = get_data_path();
-    local ext = exe_ext();
-    --local dll = ""
-    --if jit.os == 'Windows' then
-    --   dll = '.dll'
-    --end
+    --local ext = exe_ext();
+    local dll = ""
+    if jit.os == 'Windows' then
+       dll = '.dll'
+    end
     return {
-        omnisharp_path = nvim_data_path ..'/mason/packages/omnisharp/libexec/OmniSharp' .. ext,
+        omnisharp_path = nvim_data_path ..'/mason/packages/omnisharp/libexec/OmniSharp' .. dll,
     }
 end
 local omnisharp_setup = get_omnisharp_setup()
