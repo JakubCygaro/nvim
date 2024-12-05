@@ -17,7 +17,7 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     --['<C-Space>'] = cmp.mapping.complete(),
     ['<C-y>'] = cmp.mapping.confirm({select = true}),
-    ['<Tab>'] = cmp.mapping.confirm({select = true}),
+    ['<Tab>'] = cmp.mapping(cmp.mapping.confirm({select = true}), { "i" }),
     -- scroll up and down the documentation window
     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
     ['<C-d>'] = cmp.mapping.scroll_docs(4),

@@ -23,3 +23,5 @@ vim.keymap.set("n", "<leader>ts", ':TermSelect<CR>')
 vim.keymap.set("n", "<leader>tn", function ()
     return vim.v.count .. ':ToggleTermSetName<CR>'
 end, {expr = true})
+
+vim.keymap.set('c', '<tab>', '<C-z>', { silent = false }) -- to fix cmp
