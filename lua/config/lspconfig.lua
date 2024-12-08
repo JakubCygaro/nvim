@@ -44,7 +44,6 @@ require("mason-lspconfig").setup({
         "html",
         "intelephense",
         "cmake",
-        "cmakelint"
     }
 })
 local lspconfig = require'lspconfig'
@@ -288,4 +287,3 @@ require'lspconfig'.intelephense.setup{
 }
 
 require'lspconfig'.cmake.setup{}
-require'lspconfig'.cmakelint.setup{}
