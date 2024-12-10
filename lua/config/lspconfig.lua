@@ -363,3 +363,5 @@ require'lspconfig'.intelephense.setup{
 }
 
 require'lspconfig'.cmake.setup{}
+
+require'lspconfig'.ts_ls.setup{}
