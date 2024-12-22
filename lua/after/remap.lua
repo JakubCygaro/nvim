@@ -1,4 +1,7 @@
 vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>rn", function ()
+    vim.o.relativenumber = not vim.o.relativenumber;
+end)
 --Oil
 vim.keymap.set("n", "<leader>pv", vim.cmd.Oil)
 -- :nohl
