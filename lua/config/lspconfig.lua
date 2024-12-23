@@ -2,6 +2,15 @@
 -- This will avoid an annoying layout shift in the screen
 vim.opt.signcolumn = 'yes'
 
+local lsp_status = require'lsp-status';
+lsp_status.register_progress();
+lsp_status.config({
+    indicator_errors = 'E',
+    indicator_warnings = 'W',
+    indicator_info = 'i',
+    indicator_hint = '?',
+    indicator_ok = 'Ok',
+})
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
 local lspconfig_defaults = require('lspconfig').util.default_config
@@ -78,6 +87,8 @@ require'lspconfig'.rust_analyzer.setup {
             },
         }
     },
+    capabilities = lsp_status.capabilities,
+    on_attach = lsp_status.on_attach
     --capabilities = lspconfig_defaults.capabilities
 }
 
@@ -141,7 +152,9 @@ require'lspconfig'.clangd.setup {
                 '--enable-config'
             }
         }
-    }
+    },
+    on_attach = lsp_status.on_attach,
+    capabilities = lsp_status.capabilities
     --settings = {
     --    ['clangd'] = {
     --        ['compilationDatabasePath'] = 'build',
