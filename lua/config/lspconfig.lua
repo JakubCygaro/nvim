@@ -5,11 +5,14 @@ vim.opt.signcolumn = 'yes'
 local lsp_status = require'lsp-status';
 lsp_status.register_progress();
 lsp_status.config({
-    indicator_errors = 'E',
-    indicator_warnings = 'W',
-    indicator_info = 'i',
-    indicator_hint = '?',
-    indicator_ok = 'Ok',
+    indicator_errors = '',
+    indicator_warnings = '',
+    indicator_info = '',
+    indicator_hint = '',
+    indicator_ok = '',
+    show_filename = false,
+    component_separator = '|',
+    current_function = true,
 })
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
@@ -117,7 +120,7 @@ local function get_clangd_setup()
     end
 
     return {
-        clangd_path = nvim_data_path ..'/mason/packages/clangd/clangd_19.1.0/bin/clangd' .. ext,
+        clangd_path = nvim_data_path ..'/mason/packages/clangd/clangd_19.1.2/bin/clangd' .. ext,
         add_cc_include = mingw64,
         add_cxxc_include = add_cxxc_include,
         cc = cc,
@@ -247,6 +250,8 @@ local function get_omnisharp_setup()
 end
 local omnisharp_setup = get_omnisharp_setup()
 require'lspconfig'.omnisharp.setup {
+    on_attach = lsp_status.on_attach,
+    capabilities = lsp_status.capabilities,
     cmd = {
         "dotnet",
         omnisharp_setup.omnisharp_path
