@@ -11,6 +11,8 @@ require("config.undotree")
 require("config.vim-fugitive")
 require("config.toggleterm")
 require("config.lualine")
+require("config.nvim-dap")
+require("config.dap-ui")
 require("after.remap")
 -- require("config.closer")
 
