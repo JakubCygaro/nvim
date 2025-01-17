@@ -380,7 +380,7 @@ require'lspconfig'.intelephense.setup{
     end;
 
 }
-
+require'lspconfig'.jdtls.setup{}
 require'lspconfig'.cmake.setup{}
 
 require'lspconfig'.ts_ls.setup{}
