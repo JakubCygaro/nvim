@@ -298,6 +298,8 @@ require'lspconfig'.omnisharp.setup {
 require'lspconfig'.html.setup {
 
 }
+require'lspconfig'.digestif.setup {}
+-- require'lspconfig'.tectonic.setup {}
 --require'lspconfig'.oxlint.setup {
 --
 --}
