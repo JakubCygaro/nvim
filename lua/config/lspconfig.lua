@@ -389,4 +389,14 @@ require'lspconfig'.cmake.setup{}
 require'lspconfig'.ts_ls.setup{}
 
 require'lspconfig'.cssls.setup{}
-require'lspconfig'.pylsp.setup{}
+require'lspconfig'.pylsp.setup{
+    settings = {
+        pylsp = {
+            plugins = {
+                jedi = {
+                    environment = 'py.exe'
+                }
+            }
+        }
+    }
+}
