@@ -51,7 +51,15 @@ cmp.setup({
     end,
   },
   mapping = cmp.mapping.preset.insert({
-    ['<C-Space>'] = cmp.mapping.complete(),
+    -- ['K'] = cmp.mapping(function (fallback)
+    --     if cmp.visible_docs() then
+    --         cmp.close_docs()
+    --     elseif cmp.visible() then
+    --         cmp.open_docs()
+    --     else
+    --         fallback()
+    --     end
+    -- end),
     ['<C-y>'] = cmp.mapping.confirm({select = true}),
     ['<Tab>'] = cmp.mapping(cmp.mapping.confirm({select = true}), { "i" }),
     -- scroll up and down the documentation window

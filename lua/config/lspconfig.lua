@@ -56,7 +56,8 @@ require("mason-lspconfig").setup({
         "html",
         "intelephense",
         "cmake",
-        "cssls"
+        "cssls",
+        "pylsp"
     }
 })
 local lspconfig = require'lspconfig'
@@ -388,3 +389,4 @@ require'lspconfig'.cmake.setup{}
 require'lspconfig'.ts_ls.setup{}
 
 require'lspconfig'.cssls.setup{}
+require'lspconfig'.pylsp.setup{}
