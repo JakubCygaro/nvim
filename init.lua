@@ -13,6 +13,7 @@ require("config.toggleterm")
 require("config.lualine")
 require("config.nvim-dap")
 require("config.dap-ui")
+require("config.presence")
 require("after.remap")
 -- require("config.closer")
 
@@ -30,7 +31,6 @@ vim.o.shiftwidth = 4 -- Number of spaces inserted when indenting
 vim.o.showbreak = '~ '
 vim.g.move_map_keys = 0;
 
-
 vim.cmd('vmap <A-Down> <Plug>MoveBlockDown')
 vim.cmd('vmap <A-Up>   <Plug>MoveBlockUp')
 vim.cmd('nmap <A-Down> <Plug>MoveLineDown')
@@ -44,3 +44,5 @@ vim.cmd('nmap <A-Left>  <Plug>MoveCharLeft')
 vim.api.nvim_call_function('lexima#add_rule', {
     {char = '<', input_after = '>', filetype = 'html'}
 })
+
+vim.treesitter.language.register("glsl", "vert")
