@@ -26,6 +26,8 @@ vim.keymap.set("n", "<leader>ts", ':TermSelect<CR>')
 vim.keymap.set("n", "<leader>tn", function ()
     return vim.v.count .. ':ToggleTermSetName<CR>'
 end, {expr = true})
+-- ToggleTerm manager
+vim.keymap.set("n", "<leader>tm", "<cmd>:Telescope toggleterm_manager<CR>")
 
 vim.keymap.set('c', '<tab>', '<C-z>', { silent = false }) -- to fix cmp
 -- DAP
