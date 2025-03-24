@@ -57,3 +57,5 @@ end)
 vim.keymap.set('n', '<Leader>dt', function ()
     require('dapui').toggle()
 end)
+-- hex view
+vim.keymap.set("n", "<leader>hv", "<cmd>:HexToggle<CR>")
