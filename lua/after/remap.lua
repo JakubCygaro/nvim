@@ -9,15 +9,15 @@ vim.keymap.set("n", "<leader>nh", "<cmd>:nohl<CR>")
 -- nvim-tree
 vim.keymap.set("n", "<leader>nt", "<cmd>:NvimTreeToggle<CR>")
 -- BufferLine
-vim.keymap.set("n", "<leader><Right><Right>", "<cmd>:BufferLineCycleNext<CR>")
-vim.keymap.set("n", "<leader><Left><Left>", "<cmd>:BufferLineCyclePrev<CR>")
+vim.keymap.set("n", "<leader>ll", "<cmd>:BufferLineCycleNext<CR>")
+vim.keymap.set("n", "<leader>hh", "<cmd>:BufferLineCyclePrev<CR>")
 vim.keymap.set("n", "<Tab>", "<cmd>:BufferLineCycleNext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd>:BufferLineCyclePrev<CR>")
 vim.keymap.set("n", "<leader>bd", "<cmd>:BufferLinePickClose<CR>")
 vim.keymap.set("n", "<leader>bp", "<cmd>:BufferLinePick<CR>")
-vim.keymap.set("n", "<leader>d<Right>", "<cmd>:BufferLineCloseRight<CR>")
-vim.keymap.set("n", "<leader>d<Left>", "<cmd>:BufferLineCloseLeft<CR>")
-vim.keymap.set("n", "<leader>d<Up>", "<cmd>:BufferLineCloseOthers<CR>")
+vim.keymap.set("n", "<leader>bdl", "<cmd>:BufferLineCloseRight<CR>")
+vim.keymap.set("n", "<leader>bdh", "<cmd>:BufferLineCloseLeft<CR>")
+vim.keymap.set("n", "<leader>bdj", "<cmd>:BufferLineCloseOthers<CR>")
 -- ToggleTerm
 vim.keymap.set("n", "<leader>tt", function ()
     return vim.v.count .. ':ToggleTerm<CR>'

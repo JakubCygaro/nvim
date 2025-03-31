@@ -50,40 +50,19 @@ cmp.setup({
       vim.snippet.expand(args.body)
     end,
   },
-  mapping = cmp.mapping.preset.insert({
-    -- ['K'] = cmp.mapping(function (fallback)
-    --     if cmp.visible_docs() then
-    --         cmp.close_docs()
-    --     elseif cmp.visible() then
-    --         cmp.open_docs()
-    --     else
-    --         fallback()
-    --     end
-    -- end),
+  mapping = cmp.mapping({
     ['<C-y>'] = cmp.mapping.confirm({select = true}),
     ['<Tab>'] = cmp.mapping(cmp.mapping.confirm({select = true}), { "i" }),
     -- scroll up and down the documentation window
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-    ['<C-i>'] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-u>'] = cmp.mapping.scroll_docs(4),
+    -- select items from suggestion window
+    ['<C-j>'] = cmp.mapping.select_next_item(),
+    ['<C-k>'] = cmp.mapping.select_prev_item(),
+    --abort completion
     ['<C-e>'] = cmp.mapping({
         i = cmp.mapping.abort(),
         c = cmp.mapping.close(),
     }),
-    -- Simple tab complete
-    -- ['<Tab>'] = cmp.mapping(function(fallback)
-    --   local col = vim.fn.col('.') - 1
-
-    --   if cmp.visible() then
-    --     cmp.select_next_item({behavior = 'select'})
-    --   elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-    --     fallback()
-    --   else
-    --     cmp.complete()
-    --   end
-    -- end, {'i', 's'}),
-
-    -- -- Go to previous item
-    -- ['<S-Tab>'] = cmp.mapping.select_prev_item({behavior = 'select'}),
   }),
 })
