@@ -51,6 +51,9 @@ vim.cmd("nnoremap <leader>'  viW<esc>`>a'<esc>`<i'<esc>`>e")
 vim.cmd('vnoremap <leader>"  <esc>`>a"<esc>`<i"<esc>`>e')
 vim.cmd("vnoremap <leader>'  <esc>`>a'<esc>`<i'<esc>`>e")
 
+vim.cmd('nnoremap L  $')
+vim.cmd('nnoremap H  ^')
+
 vim.api.nvim_call_function('lexima#add_rule', {
     {char = '<', input_after = '>', filetype = 'html'}
 })
