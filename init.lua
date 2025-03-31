@@ -32,15 +32,18 @@ vim.o.shiftwidth = 4 -- Number of spaces inserted when indenting
 vim.o.showbreak = '~ '
 vim.g.move_map_keys = 0;
 
-vim.cmd('vmap <A-Down> <Plug>MoveBlockDown')
-vim.cmd('vmap <A-Up>   <Plug>MoveBlockUp')
-vim.cmd('nmap <A-Down> <Plug>MoveLineDown')
-vim.cmd('nmap <A-Up>   <Plug>MoveLineUp')
+vim.cmd('vnoremap <A-Down> <Plug>MoveBlockDown')
+vim.cmd('vnoremap <A-Up>   <Plug>MoveBlockUp')
+vim.cmd('nnoremap <A-Down> <Plug>MoveLineDown')
+vim.cmd('nnoremap <A-Up>   <Plug>MoveLineUp')
 
-vim.cmd('vmap <A-Right> <Plug>MoveBlockRight')
-vim.cmd('vmap <A-Left>  <Plug>MoveBlockLeft')
-vim.cmd('nmap <A-Right> <Plug>MoveCharRight')
-vim.cmd('nmap <A-Left>  <Plug>MoveCharLeft')
+vim.cmd('vnoremap <A-Right> <Plug>MoveBlockRight')
+vim.cmd('vnoremap <A-Left>  <Plug>MoveBlockLeft')
+vim.cmd('nnoremap <A-Right> <Plug>MoveCharRight')
+vim.cmd('nnoremap <A-Left>  <Plug>MoveCharLeft')
+
+vim.cmd('nnoremap <leader>ce  :edit $MYVIMRC<cr>')
+vim.cmd('nnoremap <leader>cs  :source $MYVIMRC<cr>')
 
 vim.api.nvim_call_function('lexima#add_rule', {
     {char = '<', input_after = '>', filetype = 'html'}
