@@ -45,6 +45,12 @@ vim.cmd('nnoremap <A-Left>  <Plug>MoveCharLeft')
 vim.cmd('nnoremap <leader>ce  :edit $MYVIMRC<cr>')
 vim.cmd('nnoremap <leader>cs  :source $MYVIMRC<cr>')
 
+vim.cmd('nnoremap <leader>"  viW<esc>`>a"<esc>`<i"<esc>`>e')
+vim.cmd("nnoremap <leader>'  viW<esc>`>a'<esc>`<i'<esc>`>e")
+
+vim.cmd('vnoremap <leader>"  <esc>`>a"<esc>`<i"<esc>`>e')
+vim.cmd("vnoremap <leader>'  <esc>`>a'<esc>`<i'<esc>`>e")
+
 vim.api.nvim_call_function('lexima#add_rule', {
     {char = '<', input_after = '>', filetype = 'html'}
 })
