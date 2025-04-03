@@ -49,3 +49,5 @@ vim.api.nvim_call_function('lexima#add_rule', {
 })
 
 vim.treesitter.language.register("glsl", "vert")
+
+vim.cmd("match DiffDelete /\\v +$/")
