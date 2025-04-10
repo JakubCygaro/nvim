@@ -51,3 +51,6 @@ vim.api.nvim_call_function('lexima#add_rule', {
 vim.treesitter.language.register("glsl", "vert")
 
 vim.cmd("match DiffDelete /\\v +$/")
+
+-- vim.cmd('nnoremap <leader>cd  :cd %:p:h<cr>')
+vim.keymap.set("n", "<leader>cd", "<cmd>:cd %:p:h<CR>")
