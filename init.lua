@@ -15,6 +15,7 @@ require("config.nvim-dap")
 require("config.dap-ui")
 require("config.presence")
 require("config.hex-view")
+require("config.lsp-signature")
 require("after.remap")
 -- require("config.closer")
 

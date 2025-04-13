@@ -2,7 +2,7 @@
 -- This will avoid an annoying layout shift in the screen
 vim.opt.signcolumn = 'yes'
 
-local lsp_status = require'lsp-status';
+local lsp_status = require 'lsp-status';
 lsp_status.register_progress();
 lsp_status.config({
     indicator_errors = '',
@@ -18,29 +18,29 @@ lsp_status.config({
 -- This should be executed before you configure any language server
 local lspconfig_defaults = require('lspconfig').util.default_config
 lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-  'force',
-  lspconfig_defaults.capabilities,
-  require('cmp_nvim_lsp').default_capabilities()
+    'force',
+    lspconfig_defaults.capabilities,
+    require('cmp_nvim_lsp').default_capabilities()
 )
 
 -- This is where you enable features that only work
 -- if there is a language server active in the file
 vim.api.nvim_create_autocmd('LspAttach', {
-  desc = 'LSP actions',
-  callback = function(event)
-    local opts = {buffer = event.buf}
+    desc = 'LSP actions',
+    callback = function(event)
+        local opts = { buffer = event.buf }
 
-    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-    vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-    vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-    vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-    vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-    vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-    vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-    vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-    vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-  end,
+        vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+        vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+        vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+        vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
+        vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+        vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
+        vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+        vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+        vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+        vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+    end,
 })
 
 require("mason").setup({
@@ -60,20 +60,20 @@ require("mason-lspconfig").setup({
         "pylsp"
     }
 })
-local lspconfig = require'lspconfig'
+local lspconfig = require 'lspconfig'
 
 local on_attach = function(client)
-    require'completion'.on_attach(client)
+    require 'completion'.on_attach(client)
 end
 
-require'lspconfig'.rust_analyzer.setup {
+require 'lspconfig'.rust_analyzer.setup {
     settings = {
         ['rust-analyzer'] = {
             check = {
-                command = "clippy";
+                command = "clippy",
             },
             diagnostics = {
-                enable = true;
+                enable = true,
             },
             imports = {
                 granularity = {
@@ -96,13 +96,13 @@ require'lspconfig'.rust_analyzer.setup {
     --capabilities = lspconfig_defaults.capabilities
 }
 
-local get_data_path = function ()
+local get_data_path = function()
     local data_path = vim.fn.stdpath('data');
     return data_path;
 end
 local function exe_ext()
     if jit.os == "Windows" then
-       return ".exe"
+        return ".exe"
     else
         return ""
     end
@@ -115,13 +115,13 @@ local function get_clangd_setup()
     local cxxc = "g++"
     local add_cxxc_include = ""
     if jit.os == 'Windows' then
-       mingw64 = '--include=C:/msys64/mingw64/include'
-       cc = "x86_64-w64-mingw32-gcc"
-       cxxc = "x86_64-w64-mingw32-g++"
+        mingw64 = '--include=C:/msys64/mingw64/include'
+        cc = "x86_64-w64-mingw32-gcc"
+        cxxc = "x86_64-w64-mingw32-g++"
     end
 
     return {
-        clangd_path = nvim_data_path ..'/mason/packages/clangd/clangd_19.1.2/bin/clangd' .. ext,
+        -- clangd_path = nvim_data_path ..'/mason/packages/clangd/clangd_19.1.2/bin/clangd' .. ext,
         add_cc_include = mingw64,
         add_cxxc_include = add_cxxc_include,
         cc = cc,
@@ -129,10 +129,11 @@ local function get_clangd_setup()
     }
 end
 
-local clangd_setup  = get_clangd_setup()
-require'lspconfig'.clangd.setup {
+local clangd_setup = get_clangd_setup()
+require 'lspconfig'.clangd.setup {
     cmd = {
-        clangd_setup.clangd_path,
+        "clangd",
+        -- clangd_setup.clangd_path,
         --'clangd',
         --'--project-root='.. vim.fn.getcwd(),
         '--background-index',
@@ -144,11 +145,27 @@ require'lspconfig'.clangd.setup {
         clangdFileStatus = true,
         clangdSemanticHighlighting = true
     },
-    filetypes = {'c', 'cpp', 'cxx', 'cc'},
-    root_dir = function() vim.fn.getcwd() end,
+    filetypes = { 'c', 'cpp', 'cxx', 'cc' },
+    -- root_dir = function(fname)
+    --     return require("lspconfig.util").root_pattern(
+    --         "Makefile",
+    --         "configure.ac",
+    --         "configure.in",
+    --         "config.h.in",
+    --         "meson.build",
+    --         "meson_options.txt",
+    --         "build.ninja"
+    --     )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(
+    --         fname
+    --     ) or require("lspconfig.util").find_git_ancestor(fname)
+    -- end,
+    root_dir = function(fname)
+        return require('lspconfig.util').root_pattern('.git', '.clangd')(fname) or
+                vim.fn.getcwd()
+    end,
     settings = {
         clangd = {
---          compilationDatabasePath = 'clangdbuild',
+            --          compilationDatabasePath = 'clangdbuild',
             fallbackFlags = {
                 '-std=c++17'
             },
@@ -213,44 +230,44 @@ require'lspconfig'.clangd.setup {
 }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require'lspconfig'.lua_ls.setup({
-  -- on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = "LuaJIT",
-        path = vim.split(package.path, ";"),
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = { "vim" },
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files and plugins
-        library = { vim.env.VIMRUNTIME },
-        checkThirdParty = false,
-      },
-      telemetry = {
-        enable = false,
-      },
+require 'lspconfig'.lua_ls.setup({
+    -- on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = "LuaJIT",
+                path = vim.split(package.path, ";"),
+            },
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = { "vim" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files and plugins
+                library = { vim.env.VIMRUNTIME },
+                checkThirdParty = false,
+            },
+            telemetry = {
+                enable = false,
+            },
+        },
     },
-  },
 })
 local function get_omnisharp_setup()
     local nvim_data_path = get_data_path();
     --local ext = exe_ext();
     local dll = ""
     if jit.os == 'Windows' then
-       dll = '.dll'
+        dll = '.dll'
     end
     return {
-        omnisharp_path = nvim_data_path ..'/mason/packages/omnisharp/libexec/OmniSharp' .. dll,
+        omnisharp_path = nvim_data_path .. '/mason/packages/omnisharp/libexec/OmniSharp' .. dll,
     }
 end
 local omnisharp_setup = get_omnisharp_setup()
-require'lspconfig'.omnisharp.setup {
+require 'lspconfig'.omnisharp.setup {
     on_attach = lsp_status.on_attach,
     capabilities = lsp_status.capabilities,
     cmd = {
@@ -296,10 +313,10 @@ require'lspconfig'.omnisharp.setup {
         },
     },
 }
-require'lspconfig'.html.setup {
+require 'lspconfig'.html.setup {
 
 }
-require'lspconfig'.digestif.setup {}
+require 'lspconfig'.digestif.setup {}
 -- require'lspconfig'.tectonic.setup {}
 --require'lspconfig'.oxlint.setup {
 --
@@ -370,26 +387,26 @@ require'lspconfig'.digestif.setup {}
 --    };
 --  };
 --}
-require'lspconfig'.intelephense.setup{
+require 'lspconfig'.intelephense.setup {
     --cmd = {bin_name, "--stdio"};
-    filetypes = {"php"};
-    root_dir = function (pattern)
-      local cwd  = vim.fn.getcwd();
-      --local root = util.root_pattern("composer.json", ".git")(pattern);
+    filetypes = { "php" },
+    root_dir = function(pattern)
+        local cwd = vim.fn.getcwd();
+        --local root = util.root_pattern("composer.json", ".git")(pattern);
 
-      -- prefer cwd if root is a descendant
-      --return util.path.is_descendant(cwd, root) and cwd or root;
-      return cwd
-    end;
+        -- prefer cwd if root is a descendant
+        --return util.path.is_descendant(cwd, root) and cwd or root;
+        return cwd
+    end,
 
 }
-require'lspconfig'.jdtls.setup{}
-require'lspconfig'.cmake.setup{}
+require 'lspconfig'.jdtls.setup {}
+require 'lspconfig'.cmake.setup {}
 
-require'lspconfig'.ts_ls.setup{}
+require 'lspconfig'.ts_ls.setup {}
 
-require'lspconfig'.cssls.setup{}
-require'lspconfig'.pylsp.setup{
+require 'lspconfig'.cssls.setup {}
+require 'lspconfig'.pylsp.setup {
     settings = {
         pylsp = {
             plugins = {
