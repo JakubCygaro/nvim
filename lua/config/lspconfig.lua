@@ -133,6 +133,7 @@ local clangd_setup = get_clangd_setup()
 require 'lspconfig'.clangd.setup {
     cmd = {
         "clangd",
+        "--fallback-style=webkit",
         -- clangd_setup.clangd_path,
         --'clangd',
         --'--project-root='.. vim.fn.getcwd(),
