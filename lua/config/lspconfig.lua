@@ -57,6 +57,7 @@ require("mason-lspconfig").setup({
         "intelephense",
         "cmake",
         "cssls",
+        "gopls",
         "pylsp"
     }
 })
@@ -65,36 +66,37 @@ local lspconfig = require 'lspconfig'
 local on_attach = function(client)
     require 'completion'.on_attach(client)
 end
-
-require 'lspconfig'.rust_analyzer.setup {
-    settings = {
-        ['rust-analyzer'] = {
-            check = {
-                command = "clippy",
-            },
-            diagnostics = {
-                enable = true,
-            },
-            imports = {
-                granularity = {
-                    group = "module",
-                },
-                prefix = "self",
-            },
-            cargo = {
-                buildScripts = {
-                    enable = true,
-                },
-            },
-            procMacro = {
-                enable = true
-            },
-        }
-    },
-    capabilities = lsp_status.capabilities,
-    on_attach = lsp_status.on_attach
-    --capabilities = lspconfig_defaults.capabilities
-}
+if lspconfig.rust_analyzer then
+	require 'lspconfig'.rust_analyzer.setup {
+	    settings = {
+		['rust-analyzer'] = {
+		    check = {
+			command = "clippy",
+		    },
+		    diagnostics = {
+			enable = true,
+		    },
+		    imports = {
+			granularity = {
+			    group = "module",
+			},
+			prefix = "self",
+		    },
+		    cargo = {
+			buildScripts = {
+			    enable = true,
+			},
+		    },
+		    procMacro = {
+			enable = true
+		    },
+		}
+	    },
+	    capabilities = lsp_status.capabilities,
+	    on_attach = lsp_status.on_attach
+	    --capabilities = lspconfig_defaults.capabilities
+	}
+end
 
 local get_data_path = function()
     local data_path = vim.fn.stdpath('data');
@@ -130,132 +132,138 @@ local function get_clangd_setup()
 end
 
 local clangd_setup = get_clangd_setup()
-require 'lspconfig'.clangd.setup {
-    cmd = {
-        "clangd",
-        "--fallback-style=webkit",
-        -- clangd_setup.clangd_path,
-        --'clangd',
-        --'--project-root='.. vim.fn.getcwd(),
-        '--background-index',
-        --'--query-driver=\'x86_64-w64-mingw32-g++\',\'x86_64-w64-mingw32-gcc\'',
-        '--enable-config',
-        '--compile-commands-dir=./compile_commands.json'
-    },
-    init_options = {
-        clangdFileStatus = true,
-        clangdSemanticHighlighting = true
-    },
-    filetypes = { 'c', 'cpp', 'cxx', 'cc' },
-    -- root_dir = function(fname)
-    --     return require("lspconfig.util").root_pattern(
-    --         "Makefile",
-    --         "configure.ac",
-    --         "configure.in",
-    --         "config.h.in",
-    --         "meson.build",
-    --         "meson_options.txt",
-    --         "build.ninja"
-    --     )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(
-    --         fname
-    --     ) or require("lspconfig.util").find_git_ancestor(fname)
-    -- end,
-    root_dir = function(fname)
-        return require('lspconfig.util').root_pattern('.git', '.clangd')(fname) or
-                vim.fn.getcwd()
-    end,
-    settings = {
-        clangd = {
-            --          compilationDatabasePath = 'clangdbuild',
-            fallbackFlags = {
-                '-std=c++17'
-            },
-            arguments = {
-                '--enable-config'
-            }
-        }
-    },
-    on_attach = lsp_status.on_attach,
-    capabilities = lsp_status.capabilities
-    --settings = {
-    --    ['clangd'] = {
-    --        ['compilationDatabasePath'] = 'build',
-    --        ['fallbackFlags'] = {'-std=c++17'},
-    --        ['CompileFlags'] = {
-    --            ['Compiler'] = {
-    --                clangd_setup.cc
-    --            },
-    --            ['Add'] = {
-    --                clangd_setup.add_cc_include
-    --            }
-    --        },
-    --        --['---'] = {
-    --        --    ['If'] = {
-    --        --        ['PathMatch'] = '.*\\.cpp .*\\.cxx .*\\.cc .*\\.hpp'
-    --        --    },
-    --        --    ['Compiler'] = {
-    --        --        clangd_setup.cxxc
-    --        --    },
-    --        --    ['Add'] = {
-    --        --        clangd_setup.add_cxxc_include
-    --        --    }
-    --        --},
-    --        --string.format(
-    --        --[[
-    --        --If:
-    --        --    PathMatch: .*\.c .*\.h
-    --        --CompileFlags:
-    --        --    Compiler: %s
-    --        --    Add: [%s]
-    --        --If:
-    --        --    PathMatch: .*\.cpp .*\.cxx .*\.cc .*\.hpp
-    --        --CompileFlags:
-    --        --    Compiler: %s
-    --        --    Add: [%s]
-    --        --]]
-    --        --, clangd_setup.cc, clangd_setup.add_cc_include,
-    --        --    clangd_setup.cxxc, clangd_setup.add_cc_include)
-    --        --['If'] = {
-    --        --    ['PathMatch'] = '.*\\.c .*\\.h'
-    --        --},
-    --        --['CompileFlags'] = {
-    --        --    ['Compiler'] = {
-    --        --        clangd_setup.cc
-    --        --    },
-    --        --    ['Add'] = {
-    --        --        clangd_setup.add_include
-    --        --    }
-    --        --}
-    --    }
-    --}
-}
+if lspconfig.clangd then
+
+	require 'lspconfig'.clangd.setup {
+	    cmd = {
+		"clangd",
+		"--fallback-style=webkit",
+		-- clangd_setup.clangd_path,
+		--'clangd',
+		--'--project-root='.. vim.fn.getcwd(),
+		'--background-index',
+		--'--query-driver=\'x86_64-w64-mingw32-g++\',\'x86_64-w64-mingw32-gcc\'',
+		'--enable-config',
+		'--compile-commands-dir=./compile_commands.json'
+	    },
+	    init_options = {
+		clangdFileStatus = true,
+		clangdSemanticHighlighting = true
+	    },
+	    filetypes = { 'c', 'cpp', 'cxx', 'cc' },
+	    -- root_dir = function(fname)
+	    --     return require("lspconfig.util").root_pattern(
+	    --         "Makefile",
+	    --         "configure.ac",
+	    --         "configure.in",
+	    --         "config.h.in",
+	    --         "meson.build",
+	    --         "meson_options.txt",
+	    --         "build.ninja"
+	    --     )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(
+	    --         fname
+	    --     ) or require("lspconfig.util").find_git_ancestor(fname)
+	    -- end,
+	    root_dir = function(fname)
+		return require('lspconfig.util').root_pattern('.git', '.clangd')(fname) or
+			vim.fn.getcwd()
+	    end,
+	    settings = {
+		clangd = {
+		    --          compilationDatabasePath = 'clangdbuild',
+		    fallbackFlags = {
+			'-std=c++17'
+		    },
+		    arguments = {
+			'--enable-config'
+		    }
+		}
+	    },
+	    on_attach = lsp_status.on_attach,
+	    capabilities = lsp_status.capabilities
+	    --settings = {
+	    --    ['clangd'] = {
+	    --        ['compilationDatabasePath'] = 'build',
+	    --        ['fallbackFlags'] = {'-std=c++17'},
+	    --        ['CompileFlags'] = {
+	    --            ['Compiler'] = {
+	    --                clangd_setup.cc
+	    --            },
+	    --            ['Add'] = {
+	    --                clangd_setup.add_cc_include
+	    --            }
+	    --        },
+	    --        --['---'] = {
+	    --        --    ['If'] = {
+	    --        --        ['PathMatch'] = '.*\\.cpp .*\\.cxx .*\\.cc .*\\.hpp'
+	    --        --    },
+	    --        --    ['Compiler'] = {
+	    --        --        clangd_setup.cxxc
+	    --        --    },
+	    --        --    ['Add'] = {
+	    --        --        clangd_setup.add_cxxc_include
+	    --        --    }
+	    --        --},
+	    --        --string.format(
+	    --        --[[
+	    --        --If:
+	    --        --    PathMatch: .*\.c .*\.h
+	    --        --CompileFlags:
+	    --        --    Compiler: %s
+	    --        --    Add: [%s]
+	    --        --If:
+	    --        --    PathMatch: .*\.cpp .*\.cxx .*\.cc .*\.hpp
+	    --        --CompileFlags:
+	    --        --    Compiler: %s
+	    --        --    Add: [%s]
+	    --        --]]
+	    --        --, clangd_setup.cc, clangd_setup.add_cc_include,
+	    --        --    clangd_setup.cxxc, clangd_setup.add_cc_include)
+	    --        --['If'] = {
+	    --        --    ['PathMatch'] = '.*\\.c .*\\.h'
+	    --        --},
+	    --        --['CompileFlags'] = {
+	    --        --    ['Compiler'] = {
+	    --        --        clangd_setup.cc
+	    --        --    },
+	    --        --    ['Add'] = {
+	    --        --        clangd_setup.add_include
+	    --        --    }
+	    --        --}
+	    --    }
+	    --}
+	}
+end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require 'lspconfig'.lua_ls.setup({
-    -- on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-        Lua = {
-            runtime = {
-                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                version = "LuaJIT",
-                path = vim.split(package.path, ";"),
-            },
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = { "vim" },
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files and plugins
-                library = { vim.env.VIMRUNTIME },
-                checkThirdParty = false,
-            },
-            telemetry = {
-                enable = false,
-            },
-        },
-    },
-})
+if lspconfig.lua_ls then
+
+	require 'lspconfig'.lua_ls.setup({
+	    -- on_attach = on_attach,
+	    capabilities = capabilities,
+	    settings = {
+		Lua = {
+		    runtime = {
+			-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+			version = "LuaJIT",
+			path = vim.split(package.path, ";"),
+		    },
+		    diagnostics = {
+			-- Get the language server to recognize the `vim` global
+			globals = { "vim" },
+		    },
+		    workspace = {
+			-- Make the server aware of Neovim runtime files and plugins
+			library = { vim.env.VIMRUNTIME },
+			checkThirdParty = false,
+		    },
+		    telemetry = {
+			enable = false,
+		    },
+		},
+	    },
+	})
+end
 local function get_omnisharp_setup()
     local nvim_data_path = get_data_path();
     --local ext = exe_ext();
@@ -268,56 +276,63 @@ local function get_omnisharp_setup()
     }
 end
 local omnisharp_setup = get_omnisharp_setup()
-require 'lspconfig'.omnisharp.setup {
-    on_attach = lsp_status.on_attach,
-    capabilities = lsp_status.capabilities,
-    cmd = {
-        "dotnet",
-        omnisharp_setup.omnisharp_path
-    },
-    settings = {
-        FormattingOptions = {
-            -- Enables support for reading code style, naming convention and analyzer
-            -- settings from .editorconfig.
-            EnableEditorConfigSupport = true,
-            -- Specifies whether 'using' directives should be grouped and sorted during
-            -- document formatting.
-            OrganizeImports = true,
-        },
-        MsBuild = {
-            -- If true, MSBuild project system will only load projects for files that
-            -- were opened in the editor. This setting is useful for big C# codebases
-            -- and allows for faster initialization of code navigation features only
-            -- for projects that are relevant to code that is being edited. With this
-            -- setting enabled OmniSharp may load fewer projects and may thus display
-            -- incomplete reference lists for symbols.
-            LoadProjectsOnDemand = false,
-        },
-        RoslynExtensionsOptions = {
-            -- Enables support for roslyn analyzers, code fixes and rulesets.
-            EnableAnalyzersSupport = true,
-            -- Enables support for showing unimported types and unimported extension
-            -- methods in completion lists. When committed, the appropriate using
-            -- directive will be added at the top of the current file. This option can
-            -- have a negative impact on initial completion responsiveness,
-            -- particularly for the first few completion sessions after opening a
-            -- solution.
-            EnableImportCompletion = nil,
-            -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
-            -- true
-            AnalyzeOpenDocumentsOnly = false,
-        },
-        Sdk = {
-            -- Specifies whether to include preview versions of the .NET SDK when
-            -- determining which version to use for project loading.
-            IncludePrereleases = true,
-        },
-    },
-}
-require 'lspconfig'.html.setup {
+if lspconfig.omnisharp then
 
-}
-require 'lspconfig'.digestif.setup {}
+	require 'lspconfig'.omnisharp.setup {
+	    on_attach = lsp_status.on_attach,
+	    capabilities = lsp_status.capabilities,
+	    cmd = {
+		"dotnet",
+		omnisharp_setup.omnisharp_path
+	    },
+	    settings = {
+		FormattingOptions = {
+		    -- Enables support for reading code style, naming convention and analyzer
+		    -- settings from .editorconfig.
+		    EnableEditorConfigSupport = true,
+		    -- Specifies whether 'using' directives should be grouped and sorted during
+		    -- document formatting.
+		    OrganizeImports = true,
+		},
+		MsBuild = {
+		    -- If true, MSBuild project system will only load projects for files that
+		    -- were opened in the editor. This setting is useful for big C# codebases
+		    -- and allows for faster initialization of code navigation features only
+		    -- for projects that are relevant to code that is being edited. With this
+		    -- setting enabled OmniSharp may load fewer projects and may thus display
+		    -- incomplete reference lists for symbols.
+		    LoadProjectsOnDemand = false,
+		},
+		RoslynExtensionsOptions = {
+		    -- Enables support for roslyn analyzers, code fixes and rulesets.
+		    EnableAnalyzersSupport = true,
+		    -- Enables support for showing unimported types and unimported extension
+		    -- methods in completion lists. When committed, the appropriate using
+		    -- directive will be added at the top of the current file. This option can
+		    -- have a negative impact on initial completion responsiveness,
+		    -- particularly for the first few completion sessions after opening a
+		    -- solution.
+		    EnableImportCompletion = nil,
+		    -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+		    -- true
+		    AnalyzeOpenDocumentsOnly = false,
+		},
+		Sdk = {
+		    -- Specifies whether to include preview versions of the .NET SDK when
+		    -- determining which version to use for project loading.
+		    IncludePrereleases = true,
+		},
+	    },
+	}
+end
+if lspconfig.html then
+	require 'lspconfig'.html.setup {
+
+	}
+end
+if lspconfig.digestif then 
+	require 'lspconfig'.digestif.setup {}
+end
 -- require'lspconfig'.tectonic.setup {}
 --require'lspconfig'.oxlint.setup {
 --
@@ -388,34 +403,45 @@ require 'lspconfig'.digestif.setup {}
 --    };
 --  };
 --}
-require 'lspconfig'.intelephense.setup {
-    --cmd = {bin_name, "--stdio"};
-    filetypes = { "php" },
-    root_dir = function(pattern)
-        local cwd = vim.fn.getcwd();
-        --local root = util.root_pattern("composer.json", ".git")(pattern);
+if lspconfig.intelephense then
+	require 'lspconfig'.intelephense.setup {
+	    --cmd = {bin_name, "--stdio"};
+	    filetypes = { "php" },
+	    root_dir = function(pattern)
+		local cwd = vim.fn.getcwd();
+		--local root = util.root_pattern("composer.json", ".git")(pattern);
 
-        -- prefer cwd if root is a descendant
-        --return util.path.is_descendant(cwd, root) and cwd or root;
-        return cwd
-    end,
-
-}
-require 'lspconfig'.jdtls.setup {}
-require 'lspconfig'.cmake.setup {}
-
-require 'lspconfig'.ts_ls.setup {}
-
-require 'lspconfig'.cssls.setup {}
-require 'lspconfig'.pylsp.setup {
-    settings = {
-        pylsp = {
-            plugins = {
-                jedi = {
-                    environment = 'py.exe'
-                }
-            }
-        }
-    }
-}
-require'lspconfig'.gopls.setup{}
+		-- prefer cwd if root is a descendant
+		--return util.path.is_descendant(cwd, root) and cwd or root;
+		return cwd
+	    end,
+	}
+end
+if lspconfig.jdtls then
+	require 'lspconfig'.jdtls.setup {}
+end
+if lspconfig.cmake then
+	require 'lspconfig'.cmake.setup {}
+end
+if lspconfig.ts_ls then
+	require 'lspconfig'.ts_ls.setup {}
+end
+if lspconfig.cssls then
+	require 'lspconfig'.cssls.setup {}
+end
+if lspconfig.pylsp then
+	require 'lspconfig'.pylsp.setup {
+	    settings = {
+		pylsp = {
+		    plugins = {
+			jedi = {
+			    environment = 'py.exe'
+			}
+		    }
+		}
+	    }
+	}
+end
+if lspconfig.gopls then
+	require'lspconfig'.gopls.setup{}
+end
