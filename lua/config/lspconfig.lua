@@ -62,385 +62,226 @@ require("mason-lspconfig").setup({
 })
 local lspconfig = require 'lspconfig'
 
-local on_attach = function(client)
-    require 'completion'.on_attach(client)
-end
-if lspconfig.rust_analyzer then
-	require 'lspconfig'.rust_analyzer.setup {
-	    settings = {
-		['rust-analyzer'] = {
-		    check = {
-			command = "clippy",
-		    },
-		    diagnostics = {
-			enable = true,
-		    },
-		    imports = {
-			granularity = {
-			    group = "module",
-			},
-			prefix = "self",
-		    },
-		    cargo = {
-			buildScripts = {
-			    enable = true,
-			},
-		    },
-		    procMacro = {
-			enable = true
-		    },
-		}
-	    },
-	    capabilities = lsp_status.capabilities,
-	    on_attach = lsp_status.on_attach
-	    --capabilities = lspconfig_defaults.capabilities
-	}
-end
+vim.lsp.config('rust_analyzer', {
+    settings = {
+        ['rust-analyzer'] = {
+            check = {
+                command = "clippy",
+            },
+            diagnostics = {
+                enable = true,
+            },
+            imports = {
+                granularity = {
+                    group = "module",
+                },
+                prefix = "self",
+            },
+            cargo = {
+                buildScripts = {
+                    enable = true,
+                },
+            },
+            procMacro = {
+                enable = true
+            },
+        }
+    },
+    capabilities = lsp_status.capabilities,
+    on_attach = lsp_status.on_attach
+    --capabilities = lspconfig_defaults.capabilities
+})
 
-local get_data_path = function()
-    local data_path = vim.fn.stdpath('data');
-    return data_path;
-end
-local function exe_ext()
-    if jit.os == "Windows" then
-        return ".exe"
-    else
-        return ""
-    end
-end
-local function get_clangd_setup()
-    local nvim_data_path = get_data_path();
-    local ext = exe_ext();
-    local mingw64 = ""
-    local cc = "gcc"
-    local cxxc = "g++"
-    local add_cxxc_include = ""
-    if jit.os == 'Windows' then
-        mingw64 = '--include=C:/msys64/mingw64/include'
-        cc = "x86_64-w64-mingw32-gcc"
-        cxxc = "x86_64-w64-mingw32-g++"
-    end
+-- clangd config
+vim.lsp.config('clangd', {
+    cmd = {
+        "clangd",
+        "--fallback-style=webkit",
+        '--background-index',
+        --'--query-driver=\'x86_64-w64-mingw32-g++\',\'x86_64-w64-mingw32-gcc\'',
+        '--enable-config',
+        '--compile-commands-dir=./compile_commands.json'
+    },
+    init_options = {
+        clangdFileStatus = true,
+        clangdSemanticHighlighting = true
+    },
+    filetypes = { 'c', 'cpp', 'cxx', 'cc' },
+    root_dir = function(fname)
+        return require('lspconfig.util').root_pattern('.git', '.clangd')(fname) or
+            vim.fn.getcwd()
+    end,
+    settings = {
+        clangd = {
+            fallbackFlags = {
+                '-std=c++17'
+            },
+            arguments = {
+                '--enable-config'
+            }
+        }
+    },
+    on_attach = lsp_status.on_attach,
+    capabilities = lsp_status.capabilities
+})
 
-    return {
-        -- clangd_path = nvim_data_path ..'/mason/packages/clangd/clangd_19.1.2/bin/clangd' .. ext,
-        add_cc_include = mingw64,
-        add_cxxc_include = add_cxxc_include,
-        cc = cc,
-        cxxc = cxxc
-    }
-end
-
-local clangd_setup = get_clangd_setup()
-if lspconfig.clangd then
-
-	require 'lspconfig'.clangd.setup {
-	    cmd = {
-		"clangd",
-		"--fallback-style=webkit",
-		-- clangd_setup.clangd_path,
-		--'clangd',
-		--'--project-root='.. vim.fn.getcwd(),
-		'--background-index',
-		--'--query-driver=\'x86_64-w64-mingw32-g++\',\'x86_64-w64-mingw32-gcc\'',
-		'--enable-config',
-		'--compile-commands-dir=./compile_commands.json'
-	    },
-	    init_options = {
-		clangdFileStatus = true,
-		clangdSemanticHighlighting = true
-	    },
-	    filetypes = { 'c', 'cpp', 'cxx', 'cc' },
-	    -- root_dir = function(fname)
-	    --     return require("lspconfig.util").root_pattern(
-	    --         "Makefile",
-	    --         "configure.ac",
-	    --         "configure.in",
-	    --         "config.h.in",
-	    --         "meson.build",
-	    --         "meson_options.txt",
-	    --         "build.ninja"
-	    --     )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(
-	    --         fname
-	    --     ) or require("lspconfig.util").find_git_ancestor(fname)
-	    -- end,
-	    root_dir = function(fname)
-		return require('lspconfig.util').root_pattern('.git', '.clangd')(fname) or
-			vim.fn.getcwd()
-	    end,
-	    settings = {
-		clangd = {
-		    --          compilationDatabasePath = 'clangdbuild',
-		    fallbackFlags = {
-			'-std=c++17'
-		    },
-		    arguments = {
-			'--enable-config'
-		    }
-		}
-	    },
-	    on_attach = lsp_status.on_attach,
-	    capabilities = lsp_status.capabilities
-	    --settings = {
-	    --    ['clangd'] = {
-	    --        ['compilationDatabasePath'] = 'build',
-	    --        ['fallbackFlags'] = {'-std=c++17'},
-	    --        ['CompileFlags'] = {
-	    --            ['Compiler'] = {
-	    --                clangd_setup.cc
-	    --            },
-	    --            ['Add'] = {
-	    --                clangd_setup.add_cc_include
-	    --            }
-	    --        },
-	    --        --['---'] = {
-	    --        --    ['If'] = {
-	    --        --        ['PathMatch'] = '.*\\.cpp .*\\.cxx .*\\.cc .*\\.hpp'
-	    --        --    },
-	    --        --    ['Compiler'] = {
-	    --        --        clangd_setup.cxxc
-	    --        --    },
-	    --        --    ['Add'] = {
-	    --        --        clangd_setup.add_cxxc_include
-	    --        --    }
-	    --        --},
-	    --        --string.format(
-	    --        --[[
-	    --        --If:
-	    --        --    PathMatch: .*\.c .*\.h
-	    --        --CompileFlags:
-	    --        --    Compiler: %s
-	    --        --    Add: [%s]
-	    --        --If:
-	    --        --    PathMatch: .*\.cpp .*\.cxx .*\.cc .*\.hpp
-	    --        --CompileFlags:
-	    --        --    Compiler: %s
-	    --        --    Add: [%s]
-	    --        --]]
-	    --        --, clangd_setup.cc, clangd_setup.add_cc_include,
-	    --        --    clangd_setup.cxxc, clangd_setup.add_cc_include)
-	    --        --['If'] = {
-	    --        --    ['PathMatch'] = '.*\\.c .*\\.h'
-	    --        --},
-	    --        --['CompileFlags'] = {
-	    --        --    ['Compiler'] = {
-	    --        --        clangd_setup.cc
-	    --        --    },
-	    --        --    ['Add'] = {
-	    --        --        clangd_setup.add_include
-	    --        --    }
-	    --        --}
-	    --    }
-	    --}
-	}
-end
-
+-- lua_ls config
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-if lspconfig.lua_ls then
+vim.lsp.config('lua_ls', ({
+    -- on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+        Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = "LuaJIT",
+                path = vim.split(package.path, ";"),
+            },
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = { "vim" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files and plugins
+                library = { vim.env.VIMRUNTIME },
+                checkThirdParty = false,
+            },
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
+}))
 
-	require 'lspconfig'.lua_ls.setup({
-	    -- on_attach = on_attach,
-	    capabilities = capabilities,
-	    settings = {
-		Lua = {
-		    runtime = {
-			-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-			version = "LuaJIT",
-			path = vim.split(package.path, ";"),
-		    },
-		    diagnostics = {
-			-- Get the language server to recognize the `vim` global
-			globals = { "vim" },
-		    },
-		    workspace = {
-			-- Make the server aware of Neovim runtime files and plugins
-			library = { vim.env.VIMRUNTIME },
-			checkThirdParty = false,
-		    },
-		    telemetry = {
-			enable = false,
-		    },
-		},
-	    },
-	})
-end
-local function get_omnisharp_setup()
-    local nvim_data_path = get_data_path();
-    --local ext = exe_ext();
-    local dll = ""
-    if jit.os == 'Windows' then
-        dll = '.dll'
-    end
-    return {
-        omnisharp_path = nvim_data_path .. '/mason/packages/omnisharp/libexec/OmniSharp' .. dll,
+lspconfig.omnisharp.setup {
+    on_attach = lsp_status.on_attach,
+    capabilities = lsp_status.capabilities,
+    cmd = {
+        "omnisharp.cmd"
+    },
+    settings = {
+        FormattingOptions = {
+            -- Enables support for reading code style, naming convention and analyzer
+            -- settings from .editorconfig.
+            EnableEditorConfigSupport = true,
+            -- Specifies whether 'using' directives should be grouped and sorted during
+            -- document formatting.
+            OrganizeImports = true,
+        },
+        MsBuild = {
+            -- If true, MSBuild project system will only load projects for files that
+            -- were opened in the editor. This setting is useful for big C# codebases
+            -- and allows for faster initialization of code navigation features only
+            -- for projects that are relevant to code that is being edited. With this
+            -- setting enabled OmniSharp may load fewer projects and may thus display
+            -- incomplete reference lists for symbols.
+            LoadProjectsOnDemand = false,
+        },
+        RoslynExtensionsOptions = {
+            -- Enables support for roslyn analyzers, code fixes and rulesets.
+            EnableAnalyzersSupport = true,
+            -- Enables support for showing unimported types and unimported extension
+            -- methods in completion lists. When committed, the appropriate using
+            -- directive will be added at the top of the current file. This option can
+            -- have a negative impact on initial completion responsiveness,
+            -- particularly for the first few completion sessions after opening a
+            -- solution.
+            EnableImportCompletion = nil,
+            -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+            -- true
+            AnalyzeOpenDocumentsOnly = false,
+        },
+        Sdk = {
+            -- Specifies whether to include preview versions of the .NET SDK when
+            -- determining which version to use for project loading.
+            IncludePrereleases = true,
+        },
+    },
+}
+-- vim.lsp.config['omnisharp'] = {
+--     on_attach = lsp_status.on_attach,
+--     capabilities = lsp_status.capabilities,
+--     cmd = {
+--         "omnisharp"
+--     },
+--     settings = {
+--         FormattingOptions = {
+--             -- Enables support for reading code style, naming convention and analyzer
+--             -- settings from .editorconfig.
+--             EnableEditorConfigSupport = true,
+--             -- Specifies whether 'using' directives should be grouped and sorted during
+--             -- document formatting.
+--             OrganizeImports = true,
+--         },
+--         MsBuild = {
+--             -- If true, MSBuild project system will only load projects for files that
+--             -- were opened in the editor. This setting is useful for big C# codebases
+--             -- and allows for faster initialization of code navigation features only
+--             -- for projects that are relevant to code that is being edited. With this
+--             -- setting enabled OmniSharp may load fewer projects and may thus display
+--             -- incomplete reference lists for symbols.
+--             LoadProjectsOnDemand = false,
+--         },
+--         RoslynExtensionsOptions = {
+--             -- Enables support for roslyn analyzers, code fixes and rulesets.
+--             EnableAnalyzersSupport = true,
+--             -- Enables support for showing unimported types and unimported extension
+--             -- methods in completion lists. When committed, the appropriate using
+--             -- directive will be added at the top of the current file. This option can
+--             -- have a negative impact on initial completion responsiveness,
+--             -- particularly for the first few completion sessions after opening a
+--             -- solution.
+--             EnableImportCompletion = nil,
+--             -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+--             -- true
+--             AnalyzeOpenDocumentsOnly = false,
+--         },
+--         Sdk = {
+--             -- Specifies whether to include preview versions of the .NET SDK when
+--             -- determining which version to use for project loading.
+--             IncludePrereleases = true,
+--         },
+--     },
+-- }
+-- html config
+vim.lsp.config('html', {})
+
+-- digestif config
+vim.lsp.config('digestif', {})
+
+-- intelephense config
+vim.lsp.config('intelephense', {
+    filetypes = { "php" },
+    root_dir = function(_)
+        local cwd = vim.fn.getcwd();
+        return cwd
+    end,
+})
+
+-- jdtls config
+vim.lsp.config('jdtls', {})
+
+-- cmake config
+vim.lsp.config('cmake', {})
+
+-- ts_ls config
+vim.lsp.config('ts_ls', {})
+
+-- cssls config
+vim.lsp.config('cssls', {})
+
+-- pylsp config
+vim.lsp.config('pylsp', {
+    settings = {
+        pylsp = {
+            plugins = {
+                jedi = {
+                    environment = 'py.exe'
+                }
+            }
+        }
     }
-end
-local omnisharp_setup = get_omnisharp_setup()
-if lspconfig.omnisharp then
+})
 
-	require 'lspconfig'.omnisharp.setup {
-	    on_attach = lsp_status.on_attach,
-	    capabilities = lsp_status.capabilities,
-	    cmd = {
-		"dotnet",
-		omnisharp_setup.omnisharp_path
-	    },
-	    settings = {
-		FormattingOptions = {
-		    -- Enables support for reading code style, naming convention and analyzer
-		    -- settings from .editorconfig.
-		    EnableEditorConfigSupport = true,
-		    -- Specifies whether 'using' directives should be grouped and sorted during
-		    -- document formatting.
-		    OrganizeImports = true,
-		},
-		MsBuild = {
-		    -- If true, MSBuild project system will only load projects for files that
-		    -- were opened in the editor. This setting is useful for big C# codebases
-		    -- and allows for faster initialization of code navigation features only
-		    -- for projects that are relevant to code that is being edited. With this
-		    -- setting enabled OmniSharp may load fewer projects and may thus display
-		    -- incomplete reference lists for symbols.
-		    LoadProjectsOnDemand = false,
-		},
-		RoslynExtensionsOptions = {
-		    -- Enables support for roslyn analyzers, code fixes and rulesets.
-		    EnableAnalyzersSupport = true,
-		    -- Enables support for showing unimported types and unimported extension
-		    -- methods in completion lists. When committed, the appropriate using
-		    -- directive will be added at the top of the current file. This option can
-		    -- have a negative impact on initial completion responsiveness,
-		    -- particularly for the first few completion sessions after opening a
-		    -- solution.
-		    EnableImportCompletion = nil,
-		    -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
-		    -- true
-		    AnalyzeOpenDocumentsOnly = false,
-		},
-		Sdk = {
-		    -- Specifies whether to include preview versions of the .NET SDK when
-		    -- determining which version to use for project loading.
-		    IncludePrereleases = true,
-		},
-	    },
-	}
-end
-if lspconfig.html then
-	require 'lspconfig'.html.setup {
-
-	}
-end
-if lspconfig.digestif then 
-	require 'lspconfig'.digestif.setup {}
-end
--- require'lspconfig'.tectonic.setup {}
---require'lspconfig'.oxlint.setup {
---
---}
---local configs = require 'nvim_lsp/configs'
---local util = require 'nvim_lsp/util'
---
---local server_name = "intelephense"
---local bin_name = "intelephense"
---
---local installer = util.npm_installer {
---  server_name = server_name;
---  packages = { "intelephense" };
---  binaries = {bin_name};
---}
---
---configs[server_name] = {
---  default_config = util.utf8_config {
---    cmd = {bin_name, "--stdio"};
---    filetypes = {"php"};
---    root_dir = function (pattern)
---      local cwd  = vim.loop.cwd();
---      local root = util.root_pattern("composer.json", ".git")(pattern);
---
---      -- prefer cwd if root is a descendant
---      return util.path.is_descendant(cwd, root) and cwd or root;
---    end;
---  };
---  on_new_config = function(new_config)
---    local install_info = installer.info()
---    if install_info.is_installed then
---      if type(new_config.cmd) == 'table' then
---        -- Try to preserve any additional args from upstream changes.
---        new_config.cmd[1] = install_info.binaries[bin_name]
---      else
---        new_config.cmd = {install_info.binaries[bin_name]}
---      end
---    end
---  end;
---  docs = {
---    description = [[
---https://intelephense.com/
---
---`intelephense` can be installed via `:LspInstall intelephense` or by yourself with `npm`:
---```sh
---npm install -g intelephense
---```
---]];
---    default_config = {
---      root_dir = [[root_pattern("composer.json", ".git")]];
---      on_init = [[function to handle changing offsetEncoding]];
---      capabilities = [[default capabilities, with offsetEncoding utf-8]];
---      init_options = [[{
---        storagePath = Optional absolute path to storage dir. Defaults to os.tmpdir().
---        globalStoragePath = Optional absolute path to a global storage dir. Defaults to os.homedir().
---        licenceKey = Optional licence key or absolute path to a text file containing the licence key.
---        clearCache = Optional flag to clear server state. State can also be cleared by deleting {storagePath}/intelephense
---        -- See https://github.com/bmewburn/intelephense-docs#initialisation-options
---      }]];
---      settings = [[{
---        intelephense = {
---          files = {
---            maxSize = 1000000;
---          };
---        };
---        -- See https://github.com/bmewburn/intelephense-docs#configuration-options
---      }]];
---    };
---  };
---}
-if lspconfig.intelephense then
-	require 'lspconfig'.intelephense.setup {
-	    --cmd = {bin_name, "--stdio"};
-	    filetypes = { "php" },
-	    root_dir = function(pattern)
-		local cwd = vim.fn.getcwd();
-		--local root = util.root_pattern("composer.json", ".git")(pattern);
-
-		-- prefer cwd if root is a descendant
-		--return util.path.is_descendant(cwd, root) and cwd or root;
-		return cwd
-	    end,
-	}
-end
-if lspconfig.jdtls then
-	require 'lspconfig'.jdtls.setup {}
-end
-if lspconfig.cmake then
-	require 'lspconfig'.cmake.setup {}
-end
-if lspconfig.ts_ls then
-	require 'lspconfig'.ts_ls.setup {}
-end
-if lspconfig.cssls then
-	require 'lspconfig'.cssls.setup {}
-end
-if lspconfig.pylsp then
-	require 'lspconfig'.pylsp.setup {
-	    settings = {
-		pylsp = {
-		    plugins = {
-			jedi = {
-			    environment = 'py.exe'
-			}
-		    }
-		}
-	    }
-	}
-end
-if lspconfig.gopls then
-	require'lspconfig'.gopls.setup{}
-end
+-- gopls config
+vim.lsp.config('gopls', {})
