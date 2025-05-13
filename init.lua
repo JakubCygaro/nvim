@@ -111,7 +111,4 @@ vim.keymap.set("n", "<leader>cd", "<cmd>:cd %:p:h<CR>")
 
 --diagnostics
 vim.diagnostic.config({virtual_text = true, virtual_lines = false})
-vim.keymap.set("n", "<leader>D", function ()
-    vim.diagnostic.enable(not vim.diagnostic.is_enabled())
-end)
 vim.opt.signcolumn = 'yes:1'

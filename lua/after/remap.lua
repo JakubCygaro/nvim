@@ -59,3 +59,22 @@ vim.keymap.set('n', '<Leader>dt', function ()
 end)
 -- hex view
 vim.keymap.set("n", "<leader>hv", "<cmd>:HexToggle<CR>")
+
+
+--diagnostics filtering
+local function set_diangnostics_keymap(lhs, level)
+    local dfilter = require("after.filter_diagnostics")
+    vim.keymap.set('n', lhs, function()
+        dfilter.set_level(level)
+    end,
+    { desc = "set diagnostic filter to " .. level }
+    )
+end
+
+set_diangnostics_keymap("<leader>De", vim.diagnostic.severity.ERROR)
+set_diangnostics_keymap("<leader>Dw", vim.diagnostic.severity.WARN)
+set_diangnostics_keymap("<leader>Di", vim.diagnostic.severity.INFO)
+set_diangnostics_keymap("<leader>Dh", vim.diagnostic.severity.HINT)
+vim.keymap.set("n", "<leader>Da", function ()
+    vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end)
