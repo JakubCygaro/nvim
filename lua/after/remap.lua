@@ -70,11 +70,11 @@ local function set_diangnostics_keymap(lhs, level)
     { desc = "set diagnostic filter to " .. level }
     )
 end
-
-set_diangnostics_keymap("<leader>De", vim.diagnostic.severity.ERROR)
-set_diangnostics_keymap("<leader>Dw", vim.diagnostic.severity.WARN)
-set_diangnostics_keymap("<leader>Di", vim.diagnostic.severity.INFO)
-set_diangnostics_keymap("<leader>Dh", vim.diagnostic.severity.HINT)
-vim.keymap.set("n", "<leader>Da", function ()
+-- diagnostics filtering keybinds
+set_diangnostics_keymap("<leader>E", vim.diagnostic.severity.ERROR)
+set_diangnostics_keymap("<leader>W", vim.diagnostic.severity.WARN)
+set_diangnostics_keymap("<leader>I", vim.diagnostic.severity.INFO)
+set_diangnostics_keymap("<leader>H", vim.diagnostic.severity.HINT)
+vim.keymap.set("n", "<leader>D", function ()
     vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end)

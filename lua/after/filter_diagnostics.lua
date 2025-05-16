@@ -1,6 +1,7 @@
 local M = {}
 
 local orig_diag_virt_handler = vim.diagnostic.handlers.virtual_text
+local orig_diag_signs_handler = vim.diagnostic.handlers.signs
 local ns = vim.api.nvim_create_namespace("my_diagnostics")
 
 local filter_diagnostics = function(diagnostics, level)
@@ -28,6 +29,18 @@ M.set_level = function(level)
         end,
         hide = function(_, bufnr)
             orig_diag_virt_handler.hide(ns, bufnr)
+        end
+    }
+    vim.diagnostic.handlers.signs = {
+        show = function(_, bufnr, _, opts)
+            -- get all diagnostics for local buffer
+            local diagnostics = vim.diagnostic.get(bufnr)
+            filtered = filter_diagnostics(diagnostics, level)
+            -- filter diags based on severity
+            orig_diag_signs_handler.show(ns, bufnr, filtered, opts)
+        end,
+        hide = function(_, bufnr)
+            orig_diag_signs_handler.hide(ns, bufnr)
         end
     }
 
