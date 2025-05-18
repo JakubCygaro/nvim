@@ -93,7 +93,7 @@ vim.lsp.config('rust_analyzer', {
 })
 
 -- clangd config
-vim.lsp.config('clangd', {
+lspconfig.clangd.setup{
     cmd = {
         "clangd",
         "--fallback-style=webkit",
@@ -123,7 +123,38 @@ vim.lsp.config('clangd', {
     },
     on_attach = lsp_status.on_attach,
     capabilities = lsp_status.capabilities
-})
+}
+-- vim.lsp.config('clangd', {
+--     cmd = {
+--         "clangd",
+--         "--fallback-style=webkit",
+--         '--background-index',
+--         --'--query-driver=\'x86_64-w64-mingw32-g++\',\'x86_64-w64-mingw32-gcc\'',
+--         '--enable-config',
+--         '--compile-commands-dir=./compile_commands.json'
+--     },
+--     init_options = {
+--         clangdFileStatus = true,
+--         clangdSemanticHighlighting = true
+--     },
+--     filetypes = { 'c', 'cpp', 'cxx', 'cc' },
+--     root_dir = function(fname)
+--         return require('lspconfig.util').root_pattern('.git', '.clangd')(fname) or
+--             vim.fn.getcwd()
+--     end,
+--     settings = {
+--         clangd = {
+--             fallbackFlags = {
+--                 '-std=c++17'
+--             },
+--             arguments = {
+--                 '--enable-config'
+--             }
+--         }
+--     },
+--     on_attach = lsp_status.on_attach,
+--     capabilities = lsp_status.capabilities
+-- })
 
 -- lua_ls config
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
