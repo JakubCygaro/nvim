@@ -92,8 +92,12 @@ vim.cmd('nnoremap <leader>cs  :source $MYVIMRC<cr>')
 vim.cmd('nnoremap <leader>"  viW<esc>`>a"<esc>`<i"<esc>`>e')
 vim.cmd("nnoremap <leader>'  viW<esc>`>a'<esc>`<i'<esc>`>e")
 
+vim.cmd('nnoremap <leader>*  viW<esc>`>a*<esc>`<i*<esc>`>e')
+
 vim.cmd('vnoremap <leader>"  <esc>`>a"<esc>`<i"<esc>`>e')
 vim.cmd("vnoremap <leader>'  <esc>`>a'<esc>`<i'<esc>`>e")
+
+vim.cmd('vnoremap <leader>*  <esc>`>a*<esc>`<i*<esc>`>e')
 
 vim.cmd('nnoremap L  $')
 vim.cmd('nnoremap H  ^')
