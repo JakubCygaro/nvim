@@ -92,11 +92,11 @@ vim.cmd('nnoremap <leader>cs  :source $MYVIMRC<cr>')
 vim.cmd('nnoremap <leader>"  viW<esc>`>a"<esc>`<i"<esc>`>e')
 vim.cmd("nnoremap <leader>'  viW<esc>`>a'<esc>`<i'<esc>`>e")
 
---vim.cmd('nnoremap <leader>*  viW<esc>`>a*<esc>`<i*<esc>`>e')
+vim.cmd('nnoremap <leader>*  viW<esc>`>a*<esc>`<i*<esc>`>e')
 
-vim.keymap.set("n", "<expr><leader>*", function ()
-    return "viw<esc>`>" .. vim.v.count1 .. "a*<esc>`<" .. vim.v.count1 .. "i*<esc>`>e";
-end, { expr = true , noremap = true })
+-- vim.keymap.set("n", "<expr><leader>*", function ()
+--     return "viw<esc>`>" .. vim.v.count1 .. "a*<esc>`<" .. vim.v.count1 .. "i*<esc>`>e";
+-- end, { expr = true , noremap = true })
 
 vim.keymap.set("v", '<leader>"', function ()
     return '<esc>`>' .. vim.v.count1 .. 'a"<esc>`<' .. vim.v.count1 .. 'i"<esc>`>e';
