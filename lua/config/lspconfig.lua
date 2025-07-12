@@ -91,6 +91,7 @@ vim.lsp.config('rust_analyzer', {
     on_attach = lsp_status.on_attach
     --capabilities = lspconfig_defaults.capabilities
 })
+vim.lsp.enable('rust_analyzer')
 
 -- clangd config
 lspconfig.clangd.setup{
@@ -288,12 +289,14 @@ vim.lsp.config('intelephense', {
         return cwd
     end,
 })
+vim.lsp.enable('intelephense')
 
 -- jdtls config
 vim.lsp.config('jdtls', {})
 
 -- cmake config
 vim.lsp.config('cmake', {})
+vim.lsp.enable('cmake')
 
 -- ts_ls config
 vim.lsp.config('ts_ls', {})
@@ -303,15 +306,15 @@ vim.lsp.config('cssls', {})
 
 -- pylsp config
 vim.lsp.config('pylsp', {
-    settings = {
-        pylsp = {
-            plugins = {
-                jedi = {
-                    environment = 'py.exe'
-                }
-            }
-        }
-    }
+    -- settings = {
+    --     pylsp = {
+    --         plugins = {
+    --             jedi = {
+    --                 environment = 'py.exe'
+    --             }
+    --         }
+    --     }
+    -- }
 })
 
 -- gopls config
