@@ -78,3 +78,24 @@ set_diangnostics_keymap("<leader>H", vim.diagnostic.severity.HINT)
 vim.keymap.set("n", "<leader>D", function ()
     vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end)
+
+-- compile mode
+local compile_mode = require'compile-mode';
+
+vim.keymap.set('n', '<Leader>cc', function()
+    compile_mode.compile(nil);
+end)
+
+vim.keymap.set('n', '<Leader>cr', function()
+    compile_mode.recompile(nil);
+end)
+
+vim.keymap.set('n', '<Leader>cq', function()
+    compile_mode.close_buffer();
+end)
+vim.keymap.set('n', '<Leader>cj', function()
+    compile_mode.next_error();
+end)
+vim.keymap.set('n', '<Leader>ck', function()
+    compile_mode.prev_error();
+end)
