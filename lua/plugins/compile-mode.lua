@@ -14,6 +14,8 @@ return {
   config = function()
     ---@type CompileModeOpts
     vim.g.compile_mode = {
+        default_command = "",
+        hidden_buffer = true,
         -- to add ANSI escape code support, add:
         -- baleia_setup = true,
 

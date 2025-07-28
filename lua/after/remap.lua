@@ -82,13 +82,9 @@ end)
 -- compile mode
 local compile_mode = require'compile-mode';
 
-vim.keymap.set('n', '<Leader>cc', function()
-    compile_mode.compile(nil);
-end)
+vim.keymap.set('n', '<Leader>cc', ':belowright :silent :Compile<CR>')
 
-vim.keymap.set('n', '<Leader>cr', function()
-    compile_mode.recompile(nil);
-end)
+vim.keymap.set('n', '<Leader>cr', ':belowright :silent :Recompile<CR>')
 
 vim.keymap.set('n', '<Leader>cq', function()
     compile_mode.close_buffer();
