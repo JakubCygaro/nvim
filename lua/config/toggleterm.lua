@@ -1,15 +1,23 @@
-local powershell_options = {
-  shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
-  shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
-  shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
-  shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-  shellquote = "",
-  shellxquote = "",
-}
-
-for option, value in pairs(powershell_options) do
-  vim.opt[option] = value
+local shell = nil;
+if jit.os == 'Windows' then
+    local powershell_options = {
+      shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
+      shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
+      shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
+      shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
+      shellquote = "",
+      shellxquote = "",
+    }
+    for option, value in pairs(powershell_options) do
+      vim.opt[option] = value
+    end
+    shell = powershell_options.shell;
+else
+    shell = 'zsh'
 end
+
+
+
 require'toggleterm'.setup{
     size = function(term)
         if term.direction == "horizontal" then
@@ -24,7 +32,7 @@ require'toggleterm'.setup{
     close_on_exit = true,
     terminal_mappins = true,
     autochdir = true,
-    shell = powershell_options.shell
+    shell = shell
 }
 function _G.set_terminal_keymaps()
   local opts = {buffer = 0}
