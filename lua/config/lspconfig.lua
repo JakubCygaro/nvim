@@ -192,7 +192,7 @@ lspconfig.omnisharp.setup {
     on_attach = lsp_status.on_attach,
     capabilities = lsp_status.capabilities,
     cmd = {
-        "omnisharp" .. script_ext
+        "OmniSharp" .. script_ext
     },
     settings = {
         FormattingOptions = {
