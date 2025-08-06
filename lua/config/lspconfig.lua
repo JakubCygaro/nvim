@@ -1,6 +1,9 @@
 -- Reserve a space in the gutter
 -- This will avoid an annoying layout shift in the screen
-
+local script_ext = ''
+if jit.os == 'Windows' then
+    script_ext = '.cmd'
+end
 local lsp_status = require 'lsp-status';
 lsp_status.register_progress();
 lsp_status.config({
@@ -189,7 +192,7 @@ lspconfig.omnisharp.setup {
     on_attach = lsp_status.on_attach,
     capabilities = lsp_status.capabilities,
     cmd = {
-        "omnisharp.cmd"
+        "omnisharp" .. script_ext
     },
     settings = {
         FormattingOptions = {
