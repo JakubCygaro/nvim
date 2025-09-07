@@ -58,7 +58,7 @@ vim.keymap.set("n", "<leader>*", "viW<esc>`>a*<esc>`<i*<esc>`>e", {
 -- creates a visual mode mapping that surrounds visual mode selection with a character,
 -- optionally using a different closing character if such was provided
 local function gen_surround_keymap(character, closing)
-    local description = "Surround visual selection with '" .. character "'";
+    local description = "Surround visual selection with '" .. character .. "'";
     if closing ~= nil then
         description = description .. " and closed by '" .. closing .. "'"
     end
