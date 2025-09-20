@@ -97,68 +97,38 @@ vim.lsp.config('rust_analyzer', {
 vim.lsp.enable('rust_analyzer')
 
 -- clangd config
-lspconfig.clangd.setup{
-    cmd = {
-        "clangd",
-        "--fallback-style=webkit",
-        '--background-index',
-        --'--query-driver=\'x86_64-w64-mingw32-g++\',\'x86_64-w64-mingw32-gcc\'',
-        '--enable-config',
-        '--compile-commands-dir=./compile_commands.json'
-    },
-    init_options = {
-        clangdFileStatus = true,
-        clangdSemanticHighlighting = true
-    },
-    filetypes = { 'c', 'cpp', 'cxx', 'cc' },
-    root_dir = function(fname)
-        return require('lspconfig.util').root_pattern('.git', '.clangd')(fname) or
-            vim.fn.getcwd()
-    end,
-    settings = {
-        clangd = {
-            fallbackFlags = {
-                '-std=c++17'
-            },
-            arguments = {
-                '--enable-config'
+vim.lsp.config('clangd',
+    {
+        cmd = {
+            "clangd",
+            "--fallback-style=webkit",
+            '--background-index',
+        },
+        init_options = {
+            clangdFileStatus = true,
+            clangdSemanticHighlighting = true
+        },
+        filetypes = { 'c', 'cpp', 'cxx', 'cc' },
+        -- root_dir = function(fname)
+        --     return require('lspconfig').util.root_pattern('.git', '.clangd')(fname) or
+        --         vim.fn.getcwd()
+        -- end,
+        root_markers = { '.git', '.compile_commands.json', '.clangd' },
+        settings = {
+            clangd = {
+                fallbackFlags = {
+                    '-std=c++17'
+                },
+                arguments = {
+                    '--enable-config'
+                }
             }
-        }
-    },
-    on_attach = lsp_status.on_attach,
-    capabilities = lsp_status.capabilities
-}
--- vim.lsp.config('clangd', {
---     cmd = {
---         "clangd",
---         "--fallback-style=webkit",
---         '--background-index',
---         --'--query-driver=\'x86_64-w64-mingw32-g++\',\'x86_64-w64-mingw32-gcc\'',
---         '--enable-config',
---         '--compile-commands-dir=./compile_commands.json'
---     },
---     init_options = {
---         clangdFileStatus = true,
---         clangdSemanticHighlighting = true
---     },
---     filetypes = { 'c', 'cpp', 'cxx', 'cc' },
---     root_dir = function(fname)
---         return require('lspconfig.util').root_pattern('.git', '.clangd')(fname) or
---             vim.fn.getcwd()
---     end,
---     settings = {
---         clangd = {
---             fallbackFlags = {
---                 '-std=c++17'
---             },
---             arguments = {
---                 '--enable-config'
---             }
---         }
---     },
---     on_attach = lsp_status.on_attach,
---     capabilities = lsp_status.capabilities
--- })
+        },
+        on_attach = lsp_status.on_attach,
+        capabilities = lsp_status.capabilities
+    }
+)
+vim.lsp.enable('clangd')
 
 -- lua_ls config
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -188,96 +158,53 @@ vim.lsp.config('lua_ls', ({
     },
 }))
 
-lspconfig.omnisharp.setup {
-    on_attach = lsp_status.on_attach,
-    capabilities = lsp_status.capabilities,
-    cmd = {
-        "OmniSharp" .. script_ext
-    },
-    settings = {
-        FormattingOptions = {
-            -- Enables support for reading code style, naming convention and analyzer
-            -- settings from .editorconfig.
-            EnableEditorConfigSupport = true,
-            -- Specifies whether 'using' directives should be grouped and sorted during
-            -- document formatting.
-            OrganizeImports = true,
+vim.lsp.config('omnisharp',
+    {
+        on_attach = lsp_status.on_attach,
+        capabilities = lsp_status.capabilities,
+        cmd = {
+            "OmniSharp" .. script_ext
         },
-        MsBuild = {
-            -- If true, MSBuild project system will only load projects for files that
-            -- were opened in the editor. This setting is useful for big C# codebases
-            -- and allows for faster initialization of code navigation features only
-            -- for projects that are relevant to code that is being edited. With this
-            -- setting enabled OmniSharp may load fewer projects and may thus display
-            -- incomplete reference lists for symbols.
-            LoadProjectsOnDemand = false,
+        settings = {
+            FormattingOptions = {
+                -- Enables support for reading code style, naming convention and analyzer
+                -- settings from .editorconfig.
+                EnableEditorConfigSupport = true,
+                -- Specifies whether 'using' directives should be grouped and sorted during
+                -- document formatting.
+                OrganizeImports = true,
+            },
+            MsBuild = {
+                -- If true, MSBuild project system will only load projects for files that
+                -- were opened in the editor. This setting is useful for big C# codebases
+                -- and allows for faster initialization of code navigation features only
+                -- for projects that are relevant to code that is being edited. With this
+                -- setting enabled OmniSharp may load fewer projects and may thus display
+                -- incomplete reference lists for symbols.
+                LoadProjectsOnDemand = false,
+            },
+            RoslynExtensionsOptions = {
+                -- Enables support for roslyn analyzers, code fixes and rulesets.
+                EnableAnalyzersSupport = true,
+                -- Enables support for showing unimported types and unimported extension
+                -- methods in completion lists. When committed, the appropriate using
+                -- directive will be added at the top of the current file. This option can
+                -- have a negative impact on initial completion responsiveness,
+                -- particularly for the first few completion sessions after opening a
+                -- solution.
+                EnableImportCompletion = nil,
+                -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+                -- true
+                AnalyzeOpenDocumentsOnly = false,
+            },
+            Sdk = {
+                -- Specifies whether to include preview versions of the .NET SDK when
+                -- determining which version to use for project loading.
+                IncludePrereleases = true,
+            },
         },
-        RoslynExtensionsOptions = {
-            -- Enables support for roslyn analyzers, code fixes and rulesets.
-            EnableAnalyzersSupport = true,
-            -- Enables support for showing unimported types and unimported extension
-            -- methods in completion lists. When committed, the appropriate using
-            -- directive will be added at the top of the current file. This option can
-            -- have a negative impact on initial completion responsiveness,
-            -- particularly for the first few completion sessions after opening a
-            -- solution.
-            EnableImportCompletion = nil,
-            -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
-            -- true
-            AnalyzeOpenDocumentsOnly = false,
-        },
-        Sdk = {
-            -- Specifies whether to include preview versions of the .NET SDK when
-            -- determining which version to use for project loading.
-            IncludePrereleases = true,
-        },
-    },
-}
--- vim.lsp.config['omnisharp'] = {
---     on_attach = lsp_status.on_attach,
---     capabilities = lsp_status.capabilities,
---     cmd = {
---         "omnisharp"
---     },
---     settings = {
---         FormattingOptions = {
---             -- Enables support for reading code style, naming convention and analyzer
---             -- settings from .editorconfig.
---             EnableEditorConfigSupport = true,
---             -- Specifies whether 'using' directives should be grouped and sorted during
---             -- document formatting.
---             OrganizeImports = true,
---         },
---         MsBuild = {
---             -- If true, MSBuild project system will only load projects for files that
---             -- were opened in the editor. This setting is useful for big C# codebases
---             -- and allows for faster initialization of code navigation features only
---             -- for projects that are relevant to code that is being edited. With this
---             -- setting enabled OmniSharp may load fewer projects and may thus display
---             -- incomplete reference lists for symbols.
---             LoadProjectsOnDemand = false,
---         },
---         RoslynExtensionsOptions = {
---             -- Enables support for roslyn analyzers, code fixes and rulesets.
---             EnableAnalyzersSupport = true,
---             -- Enables support for showing unimported types and unimported extension
---             -- methods in completion lists. When committed, the appropriate using
---             -- directive will be added at the top of the current file. This option can
---             -- have a negative impact on initial completion responsiveness,
---             -- particularly for the first few completion sessions after opening a
---             -- solution.
---             EnableImportCompletion = nil,
---             -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
---             -- true
---             AnalyzeOpenDocumentsOnly = false,
---         },
---         Sdk = {
---             -- Specifies whether to include preview versions of the .NET SDK when
---             -- determining which version to use for project loading.
---             IncludePrereleases = true,
---         },
---     },
--- }
+    }
+)
 -- html config
 vim.lsp.config('html', {})
 
@@ -309,15 +236,6 @@ vim.lsp.config('cssls', {})
 
 -- pylsp config
 vim.lsp.config('pylsp', {
-    -- settings = {
-    --     pylsp = {
-    --         plugins = {
-    --             jedi = {
-    --                 environment = 'py.exe'
-    --             }
-    --         }
-    --     }
-    -- }
 })
 
 -- gopls config
