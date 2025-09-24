@@ -1,9 +1,14 @@
--- Reserve a space in the gutter
--- This will avoid an annoying layout shift in the screen
+-- This file is responsible for setting up different language servers
+-- and some other stuff
+
+-- Figure out what extension an LSP launch script file will use
+-- This is important because mason sets up the installed servers that way
 local script_ext = ''
 if jit.os == 'Windows' then
     script_ext = '.cmd'
 end
+
+-- this configures the plugin that shows the LSP status symbols (errors, warnings, etc.) at the bottom of the window
 local lsp_status = require 'lsp-status';
 lsp_status.register_progress();
 lsp_status.config({
@@ -49,6 +54,8 @@ require("mason").setup({
 
 })
 
+-- Plugins that mason should auto-install,
+-- this may cause erros to be thrown because some servers require stuff like npm to be installed
 require("mason-lspconfig").setup({
     ensure_installed = {
         "lua_ls",
@@ -63,8 +70,6 @@ require("mason-lspconfig").setup({
         "pylsp"
     }
 })
-local lspconfig = require 'lspconfig'
-
 vim.lsp.config('rust_analyzer', {
     settings = {
         ['rust-analyzer'] = {
