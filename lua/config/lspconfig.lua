@@ -227,7 +227,8 @@ vim.lsp.config('intelephense', {
 vim.lsp.enable('intelephense')
 
 -- jdtls config
-vim.lsp.config('jdtls', {})
+-- vim.lsp.config('jdtls', {})
+vim.lsp.enable('jdtls')
 
 -- cmake config
 vim.lsp.config('cmake', {})

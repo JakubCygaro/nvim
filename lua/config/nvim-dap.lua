@@ -24,6 +24,15 @@ dap.adapters.cppdbg = {
       detached = false,
   },
 }
+dap.adapters.cdbg = {
+  id = 'cdbg',
+  type = 'executable',
+  name = 'cdbg',
+  command = get_data_path() .. '/mason/bin/OpenDebugAD7' .. script_etx, -- adjust as needed, must be absolute path
+  options = {
+      detached = false,
+  },
+}
 dap.configurations.rust = {
   {
     name = 'Launch',
