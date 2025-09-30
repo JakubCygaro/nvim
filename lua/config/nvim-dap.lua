@@ -51,7 +51,7 @@ dap.configurations.cpp = {
         -- externalConsole = false,
     }
 }
-dap.configurations.p = {
+dap.configurations.c = {
     {
         name = 'Launch',
         type = 'cppdbg',
