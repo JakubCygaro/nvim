@@ -24,15 +24,6 @@ dap.adapters.cppdbg = {
       detached = false,
   },
 }
-dap.adapters.cdbg = {
-  id = 'cdbg',
-  type = 'executable',
-  name = 'cdbg',
-  command = get_data_path() .. '/mason/bin/OpenDebugAD7' .. script_etx, -- adjust as needed, must be absolute path
-  options = {
-      detached = false,
-  },
-}
 dap.configurations.rust = {
   {
     name = 'Launch',
@@ -47,6 +38,20 @@ dap.configurations.rust = {
   },
 }
 dap.configurations.cpp = {
+    {
+        name = 'Launch',
+        type = 'cppdbg',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        -- stopOnEntry = true,
+        -- runInTerminal = true,
+        -- externalConsole = false,
+    }
+}
+dap.configurations.p = {
     {
         name = 'Launch',
         type = 'cppdbg',
