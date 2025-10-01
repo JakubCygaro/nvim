@@ -236,13 +236,19 @@ vim.lsp.enable('cmake')
 
 -- ts_ls config
 vim.lsp.config('ts_ls', {})
+vim.lsp.enable('ts_ls')
 
 -- cssls config
 vim.lsp.config('cssls', {})
+vim.lsp.enable('cssls')
 
 -- pylsp config
-vim.lsp.config('pylsp', {
-})
+vim.lsp.config('pylsp', {})
+vim.lsp.enable('pylsp')
 
 -- gopls config
 vim.lsp.config('gopls', {})
+vim.lsp.enable('gopls')
+
+vim.lsp.config('haskell', {})
+vim.lsp.enable('haskell')
