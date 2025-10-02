@@ -227,7 +227,9 @@ vim.lsp.config('intelephense', {
 vim.lsp.enable('intelephense')
 
 -- jdtls config
--- vim.lsp.config('jdtls', {})
+vim.lsp.config('jdtls', {
+    root_markers = { { "mvnw", "gradlew", "build.gradle", "build.gradle.kts", ".git" }, { "build.xml", "pom.xml", "settings.gradle", "settings.gradle.kts" }, { "Nopain.toml" }}
+})
 vim.lsp.enable('jdtls')
 
 -- cmake config
