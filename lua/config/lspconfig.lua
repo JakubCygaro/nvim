@@ -263,11 +263,11 @@ vim.lsp.enable('pylsp')
 vim.lsp.config('gopls', {})
 vim.lsp.enable('gopls')
 
-vim.lsp.config('haskell', {
-    root_markers = { '.git' },
-    root_dir = function(_)
-        local cwd = vim.fn.getcwd();
-        return cwd
-    end,
+vim.lsp.config('hls', {
+    settings = {
+        haskell = {
+            formattingProvider = 'fourmolu'
+        }
+    }
 })
-vim.lsp.enable('haskell')
+vim.lsp.enable('hls')

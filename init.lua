@@ -104,10 +104,6 @@ vim.keymap.set("n", "H", "^", {
     desc = "Change the default behavior of H to the behavior of ^"
 })
 
--- add lexima rule for closing <> in html files
-vim.api.nvim_call_function('lexima#add_rule', {
-    { char = '<', input_after = '>', filetype = 'html' }
-})
 
 -- add glsl recognition for treesitter for files with .vert extension
 vim.treesitter.language.register("glsl", "vert")
