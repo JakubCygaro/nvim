@@ -118,3 +118,17 @@ vim.keymap.set("n", "<leader>cd", "<cmd>:cd %:p:h<CR>", {
 --diagnostics
 vim.diagnostic.config({ virtual_text = true, virtual_lines = false })
 vim.opt.signcolumn = 'yes:1'
+
+--quickfix specific
+vim.keymap.set("n", "<leader>qo", "<cmd>:copen<CR>", {
+    desc = "Open quickfix window"
+})
+vim.keymap.set("n", "<leader>qq", "<cmd>:cclose<CR>", {
+    desc = "Close quickfix window"
+})
+vim.keymap.set("n", "<leader>qj", "<cmd>:cnext<CR>", {
+    desc = "Quickfix next"
+})
+vim.keymap.set("n", "<leader>qk", "<cmd>:cp<CR>", {
+    desc = "Quickfix previous"
+})
