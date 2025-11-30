@@ -237,7 +237,7 @@ vim.lsp.enable('intelephense')
 -- jdtls config
 local workspace_dir = vim.fn.stdpath('data') .. "/jdtls-workspace/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 vim.lsp.config('jdtls', {
-    root_markers = { { "mvnw", "gradlew", "build.gradle", "build.gradle.kts", ".git" }, { "build.xml", "pom.xml", "settings.gradle", "settings.gradle.kts" }, { "Nopain.toml" }},
+    root_markers = { { "mvnw", "gradlew", "build.gradle", "build.gradle.kts", ".git" }, { "build.xml", "pom.xml", "settings.gradle", "settings.gradle.kts" }, { "Nopain.toml" } },
     workspace_dir = workspace_dir
 
 })
@@ -271,5 +271,7 @@ vim.lsp.config('hls', {
     }
 })
 vim.lsp.enable('hls')
-vim.lsp.config('air', {})
-vim.lsp.enable('air')
+vim.lsp.config('r_language_server', {
+    root_dir = vim.fn.getcwd(),
+})
+vim.lsp.enable('r_language_server')
