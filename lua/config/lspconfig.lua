@@ -271,3 +271,5 @@ vim.lsp.config('hls', {
     }
 })
 vim.lsp.enable('hls')
+vim.lsp.config('air', {})
+vim.lsp.enable('air')
