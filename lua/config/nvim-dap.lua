@@ -65,3 +65,5 @@ dap.configurations.c = {
         -- externalConsole = false,
     }
 }
+-- go debugging with delve via a purpose built plugin
+require('dap-go').setup()
