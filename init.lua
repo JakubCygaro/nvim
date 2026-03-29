@@ -18,6 +18,7 @@ local configs_to_load = {
     "config.neocord",
     "config.hex-view",
     "config.lsp-signature",
+    "config.comfy-line-numbers",
     "after.remap",
 }
 
