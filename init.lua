@@ -7,7 +7,6 @@ local configs_to_load = {
     "config.bufferline",
     "config.cmp",
     "config.fzf-lua",
-    -- "config.telescope",
     "config.lspconfig",
     "config.treesitter",
     "config.undotree",
@@ -31,14 +30,14 @@ for _, v in ipairs(configs_to_load) do
     end
 end
 
-vim.opt.number = true  -- turn on line numbers
+vim.opt.number = true         -- turn on line numbers
 vim.opt.relativenumber = true -- turn on relative line numbering
 vim.opt.signcolumn = "number"
-vim.o.tabstop = 4      -- A TAB character looks like 4 spaces
-vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
-vim.o.softtabstop = 4  -- Number of spaces inserted instead of a TAB character
-vim.o.shiftwidth = 4   -- Number of spaces inserted when indenting
-vim.o.showbreak = '~ ' -- character for wrapped lines
+vim.o.tabstop = 4             -- A TAB character looks like 4 spaces
+vim.o.expandtab = true        -- Pressing the TAB key will insert spaces instead of a TAB character
+vim.o.softtabstop = 4         -- Number of spaces inserted instead of a TAB character
+vim.o.shiftwidth = 4          -- Number of spaces inserted when indenting
+vim.o.showbreak = '~ '        -- character for wrapped lines
 vim.g.move_map_keys = 0;
 
 vim.keymap.set("n", "<leader>ce", ":edit $MYVIMRC<CR>", {
@@ -68,12 +67,12 @@ local function gen_surround_keymap(character, closing)
         vim.keymap.set("v", "<leader>" .. closing, function()
             return "<esc>`>" ..
                 vim.v.count1 .. "a" .. closing .. "<esc>`<" .. vim.v.count1 .. "i" .. character .. "<esc>`>e";
-        end, { expr = true, desc = description})
+        end, { expr = true, desc = description })
     end
     closing = closing or character;
     vim.keymap.set("v", "<leader>" .. character, function()
         return "<esc>`>" .. vim.v.count1 .. "a" .. closing .. "<esc>`<" .. vim.v.count1 .. "i" .. character .. "<esc>`>e";
-    end, { expr = true, desc = description})
+    end, { expr = true, desc = description })
 end
 
 -- characters for visual mode surrounding
@@ -133,4 +132,9 @@ vim.keymap.set("n", "<leader>qj", "<cmd>:cnext<CR>", {
 })
 vim.keymap.set("n", "<leader>qk", "<cmd>:cp<CR>", {
     desc = "Quickfix previous"
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'go' },
+    callback = function() vim.treesitter.start() end,
 })
