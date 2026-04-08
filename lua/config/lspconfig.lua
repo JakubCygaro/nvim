@@ -64,7 +64,7 @@ require("mason-lspconfig").setup({
         "clangd",
         "html",
         "intelephense",
-        "cmake",
+        "neocmake",
         "cssls",
         "gopls",
         "pylsp"
@@ -244,8 +244,8 @@ vim.lsp.config('jdtls', {
 vim.lsp.enable('jdtls')
 
 -- cmake config
-vim.lsp.config('cmake', {})
-vim.lsp.enable('cmake')
+vim.lsp.config('neocmake', {})
+vim.lsp.enable('neocmake')
 
 -- ts_ls config
 vim.lsp.config('ts_ls', {})

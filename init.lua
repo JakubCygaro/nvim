@@ -20,6 +20,7 @@ local configs_to_load = {
     "config.lsp-signature",
     "config.comfy-line-numbers",
     "after.remap",
+    "after.treesitter",
 }
 
 for _, v in ipairs(configs_to_load) do
@@ -132,9 +133,4 @@ vim.keymap.set("n", "<leader>qj", "<cmd>:cnext<CR>", {
 })
 vim.keymap.set("n", "<leader>qk", "<cmd>:cp<CR>", {
     desc = "Quickfix previous"
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'go' },
-    callback = function() vim.treesitter.start() end,
 })
