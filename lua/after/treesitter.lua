@@ -10,6 +10,6 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'omnisharp', 'csharp' },
+    pattern = { 'omnisharp', 'csharp', 'cs' },
     callback = function() vim.treesitter.start() end,
 })
