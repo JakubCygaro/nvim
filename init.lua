@@ -135,4 +135,4 @@ vim.keymap.set("n", "<leader>qk", "<cmd>:cp<CR>", {
     desc = "Quickfix previous"
 })
 
-vim.o.colorcolumn = 90
+vim.o.colorcolumn = '90'
