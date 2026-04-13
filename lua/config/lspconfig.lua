@@ -34,8 +34,8 @@ lspconfig_defaults.capabilities = vim.tbl_deep_extend(
 -- if there is a language server active in the file
 vim.api.nvim_create_autocmd('LspAttach', {
     desc = 'LSP actions',
-    callback = function(event)
-        local opts = { buffer = event.buf }
+    callback = function(ev)
+        local opts = { buffer = ev.buf }
 
         vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
         vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
@@ -47,6 +47,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
         vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
         vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+
     end,
 })
 
@@ -60,7 +61,7 @@ require("mason-lspconfig").setup({
     ensure_installed = {
         "lua_ls",
         "rust_analyzer",
-        "omnisharp",
+        "csharp_ls",
         "clangd",
         "html",
         "intelephense",
@@ -215,7 +216,7 @@ vim.lsp.config('lua_ls', ({
 --         },
 --     }
 -- )
-vim.lsp.enable("omnisharp")
+vim.lsp.enable("csharp_ls")
 -- html config
 vim.lsp.config('html', {})
 vim.lsp.enable('html')

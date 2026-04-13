@@ -134,3 +134,5 @@ vim.keymap.set("n", "<leader>qj", "<cmd>:cnext<CR>", {
 vim.keymap.set("n", "<leader>qk", "<cmd>:cp<CR>", {
     desc = "Quickfix previous"
 })
+
+vim.o.colorcolumn = 90
