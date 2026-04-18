@@ -157,3 +157,23 @@ vim.keymap.set('n', '<Leader>ck', function()
 end, {
     desc = "Jump to previous erron in compile mode"
 })
+
+-- Lazy update
+vim.keymap.set("n", "<leader>lu", "<cmd>:Lazy update<CR>", {
+    desc = "Lazy update"
+})
+
+-- Mason update
+vim.keymap.set("n", "<leader>mu", "<cmd>:MasonUpdate<CR>", {
+    desc = "Mason update"
+})
+
+-- Mason open
+vim.keymap.set("n", "<leader>M", "<cmd>:Mason<CR>", {
+    desc = "Open Mason"
+})
+
+-- LSP restart
+vim.keymap.set("n", "<leader>lr", "<cmd>:lsp restart<CR>", {
+    desc = "LSP restart"
+})
