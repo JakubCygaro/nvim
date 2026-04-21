@@ -233,6 +233,16 @@ vim.lsp.config('r_language_server', {
             "/usr/bin/R",
             { "--no-echo", "-e", "languageserver::run()" },
         },
+        formatting_style = {
+            indent_by = 4
+        },
+        r = {
+            lsp = {
+                formatting_style = {
+                    indent_by = 4
+                }
+            }
+        }
     },
 })
 vim.lsp.enable('r_language_server')
