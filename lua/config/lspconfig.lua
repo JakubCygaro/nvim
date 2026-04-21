@@ -227,6 +227,12 @@ vim.lsp.config('hls', {
 })
 vim.lsp.enable('hls')
 vim.lsp.config('r_language_server', {
-    root_dir = vim.fn.getcwd(),
+    settings = {
+        filetypes = { "r", "rmd" },
+        cmd = {
+            "/usr/bin/R",
+            { "--no-echo", "-e", "languageserver::run()" },
+        },
+    },
 })
 vim.lsp.enable('r_language_server')
