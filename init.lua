@@ -19,12 +19,14 @@ local configs_to_load = {
     "config.hex-view",
     "config.lsp-signature",
     "config.comfy-line-numbers",
+    "config.godot",
     "after.remap",
     "after.treesitter",
 }
 
 for _, v in ipairs(configs_to_load) do
-    -- load each file via pcall so that if one plugin fails to configure that won't fuck up the whole neovim configuraton process
+    -- load each file via pcall so that if one plugin fails to configure
+    -- that won't fuck up the whole neovim configuraton process
     local status, err = pcall(require, v)
     if not status then
         print("Error while loading configuration file: " .. v .. "\n" .. err)

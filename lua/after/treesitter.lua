@@ -13,3 +13,13 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'omnisharp', 'csharp', 'cs' },
     callback = function() vim.treesitter.start() end,
 })
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'py' },
+    callback = function() vim.treesitter.start() end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'cpp', 'cc', 'c', 'cxx', 'h', 'hpp' },
+    callback = function() vim.treesitter.start() end,
+})

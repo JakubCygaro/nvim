@@ -80,8 +80,8 @@ vim.keymap.set('n', '<Leader>dB', function() require('dap').set_breakpoint() end
 })
 vim.keymap.set('n', '<Leader>dL',
     function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end, {
-    desc = "(Debugging) Set breakpoint with log message"
-})
+        desc = "(Debugging) Set breakpoint with log message"
+    })
 vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end, {
     desc = "(Debugging) Open repl"
 })
@@ -177,3 +177,4 @@ vim.keymap.set("n", "<leader>M", "<cmd>:Mason<CR>", {
 vim.keymap.set("n", "<leader>lr", "<cmd>:lsp restart<CR>", {
     desc = "LSP restart"
 })
+

@@ -70,35 +70,52 @@ require("mason-lspconfig").setup({
         "pylsp"
     }
 })
-vim.lsp.config('rust_analyzer', {
-    settings = {
-        ['rust-analyzer'] = {
-            check = {
-                command = "clippy",
-            },
-            diagnostics = {
-                enable = true,
-            },
-            imports = {
-                granularity = {
-                    group = "module",
-                },
-                prefix = "self",
-            },
-            cargo = {
-                buildScripts = {
-                    enable = true,
-                },
-            },
-            procMacro = {
-                enable = true
-            },
-        }
-    },
-    capabilities = lsp_status.capabilities,
-    on_attach = lsp_status.on_attach
-    --capabilities = lspconfig_defaults.capabilities
+-- LSP C# godot connect
+-- vim.keymap.set("n", "<leader>Ge", function()
+--     vim.lsp.start({
+--     })
+-- end, {
+--     desc = "Connect to a Godot editor LSP session via TCP on localhost"
+-- })
+vim.lsp.config('godot_csharp', {
+        cmd = vim.lsp.rpc.connect(
+            '127.0.0.1',
+            6005
+        ),
+        root_markers = vim.fs.root(0, { '.git' }),
+        -- capabilities = lsp_status.capabilities,
+        -- on_attach = lsp_status.on_attach,
 })
+
+-- vim.lsp.config('rust_analyzer', {
+--     settings = {
+--         ['rust-analyzer'] = {
+--             check = {
+--                 command = "clippy",
+--             },
+--             diagnostics = {
+--                 enable = true,
+--             },
+--             imports = {
+--                 granularity = {
+--                     group = "module",
+--                 },
+--                 prefix = "self",
+--             },
+--             cargo = {
+--                 buildScripts = {
+--                     enable = true,
+--                 },
+--             },
+--             procMacro = {
+--                 enable = true
+--             },
+--         }
+--     },
+--     capabilities = lsp_status.capabilities,
+--     on_attach = lsp_status.on_attach
+--     --capabilities = lspconfig_defaults.capabilities
+-- })
 vim.lsp.enable('rust_analyzer')
 
 -- clangd config
