@@ -12,7 +12,6 @@ return {
     -- { "m00qek/baleia.nvim", tag = "v1.3.0" },
   },
   config = function()
-    ---@type CompileModeOpts
     vim.g.compile_mode = {
         default_command = "",
         hidden_buffer = true,
